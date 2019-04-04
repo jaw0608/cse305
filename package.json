@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/jaw0608/cse305/issues"
   },
-  "homepage": "https://github.com/jaw0608/cse305#readme"
+  "homepage": "https://github.com/jaw0608/cse305#readme",
+  "dependencies": {
+    "mysql": "^2.16.0"
+  }
 }
