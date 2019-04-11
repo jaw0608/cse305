@@ -70,7 +70,6 @@ CREATE TABLE IF NOT EXISTS Shipment(
   Carrier varchar(10) NOT NULL,
   Speed varchar(9) NOT NULL CHECK (Speed in ('Expedited', 'Standard')),
   FOREIGN KEY (Address_ID) REFERENCES Address(ID),
-  FOREIGN KEY (Customer_ID) REFERENCES Customer(ID),
   PRIMARY KEY (ID)
 );
 
