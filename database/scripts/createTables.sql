@@ -67,7 +67,6 @@ CREATE TABLE IF NOT EXISTS Inventory(
 CREATE TABLE IF NOT EXISTS Shipment(
   ID int AUTO_INCREMENT NOT NULL,
   Address_ID int NOT NULL,
-  Customer_ID int NOT NULL,
   Carrier varchar(10) NOT NULL,
   Speed varchar(9) NOT NULL CHECK (Speed in ('Expedited', 'Standard')),
   FOREIGN KEY (Address_ID) REFERENCES Address(ID),
