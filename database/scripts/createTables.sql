@@ -20,6 +20,7 @@ CREATE TABLE IF NOT EXISTS Address(
   ID int AUTO_INCREMENT NOT NULL,
   City varchar(30) NOT NULL,
   State char(2) NOT NULL,
+  Street_Name varchar(20) NOT NULL,
   Street_Number int NOT NULL,
   Apt_Number int NOT NULL,
   FOREIGN KEY (Customer_ID) REFERENCES Customer(ID),
