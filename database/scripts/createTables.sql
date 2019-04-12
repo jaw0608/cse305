@@ -2,7 +2,7 @@ USE data;
 
 CREATE TABLE IF NOT EXISTS Seller (
   ID int AUTO_INCREMENT,
-  Name varchar(30) NOT NULL,
+  Name varchar(30) UNIQUE NOT NULL,
   Phone BIGINT NOT NULL,
   PRIMARY KEY (ID)
 );
@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS Customer (
   ID int AUTO_INCREMENT,
   F_Name varchar(50) NOT NULL,
   L_Name varchar(50) NOT NULL,
-  Email varchar(320) NOT NULL,
+  Email varchar(320) UNIQUE NOT NULL,
   Phone BIGINT NOT NULL,
   PRIMARY KEY (ID)
 );
@@ -25,12 +25,14 @@ CREATE TABLE IF NOT EXISTS Address(
   Apt_Number int NOT NULL,
   FOREIGN KEY (Customer_ID) REFERENCES Customer(ID),
   PRIMARY KEY (ID)
+  UNIQUE(Customer_ID,City,State,Stree_Name,Street_Number,Apt_Number)
 );
 CREATE TABLE IF NOT EXISTS Item (
   ID int AUTO_INCREMENT NOT NULL,
   Item_Name varchar(20) NOT NULL,
   Description varchar(500),
   PRIMARY KEY (ID)
+  Unique(Item_Name, Description)
 );
 CREATE TABLE IF NOT EXISTS Payment(
   Customer_ID int,
@@ -39,20 +41,22 @@ CREATE TABLE IF NOT EXISTS Payment(
   Card_Number BIGINT NOT NULL,
   Card_Expiration DATE NOT NULL,
   PRIMARY KEY (ID)
+  Unique(Customer_ID, Card_Number)                                                    
 );
 
 CREATE TABLE IF NOT EXISTS Shipment(
   ID int AUTO_INCREMENT NOT NULL,
   Address_ID int NOT NULL,
   Carrier varchar(10) NOT NULL,
+  Ship_Date DATE NOT NULL,
   Speed varchar(9) NOT NULL CHECK (Speed in ('Expedited', 'Standard')),
   FOREIGN KEY (Address_ID) REFERENCES Address(ID),
-  PRIMARY KEY (ID)
+  PRIMARY KEY (ID)                                           
 );
 
 CREATE TABLE IF NOT EXISTS Orders(
   ID BIGINT AUTO_INCREMENT NOT NULL,
-  Shipment_ID int NOT NULL,
+  Shipment_ID int UNIQUE NOT NULL,
   Customer_ID int NOT NULL,
   Seller_ID int NOT NULL,
   Item_ID int NOT NULL,
@@ -63,7 +67,7 @@ CREATE TABLE IF NOT EXISTS Orders(
   FOREIGN KEY (Seller_ID) REFERENCES Seller(ID),
   FOREIGN KEY (Item_ID) REFERENCES Item(ID),
   FOREIGN KEY (Payment_ID) REFERENCES Payment(ID),
-  PRIMARY KEY (ID,Customer_ID,Seller_ID,Item_ID)
+  PRIMARY KEY (ID)
 );
 CREATE TABLE IF NOT EXISTS Inventory(
   Item_ID int NOT NULL,
