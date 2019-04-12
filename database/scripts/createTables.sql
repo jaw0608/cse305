@@ -24,14 +24,14 @@ CREATE TABLE IF NOT EXISTS Address(
   Street_Number int NOT NULL,
   Apt_Number int NOT NULL,
   FOREIGN KEY (Customer_ID) REFERENCES Customer(ID),
-  PRIMARY KEY (ID)
-  UNIQUE(Customer_ID,City,State,Stree_Name,Street_Number,Apt_Number)
+  PRIMARY KEY (ID),
+  UNIQUE(Customer_ID,City,State,Street_Name,Street_Number,Apt_Number)
 );
 CREATE TABLE IF NOT EXISTS Item (
   ID int AUTO_INCREMENT NOT NULL,
   Item_Name varchar(20) NOT NULL,
   Description varchar(500),
-  PRIMARY KEY (ID)
+  PRIMARY KEY (ID),
   Unique(Item_Name, Description)
 );
 CREATE TABLE IF NOT EXISTS Payment(
@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS Payment(
   Payment_Type char(2) NOT NULL CHECK (Payment_Type in ('GC','CC','DC')),
   Card_Number BIGINT NOT NULL,
   Card_Expiration DATE NOT NULL,
-  PRIMARY KEY (ID)
+  PRIMARY KEY (ID),
   Unique(Customer_ID, Card_Number)                                                    
 );
 

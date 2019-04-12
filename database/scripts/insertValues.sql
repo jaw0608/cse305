@@ -44,7 +44,6 @@ VALUES
 INSERT INTO Orders(Shipment_ID, Customer_ID, Seller_ID, Item_ID, Payment_ID, Quantity)
 VALUES
   (1,1,3,3,2,10),
-  (1,1,2,2,1,1),
   (2,2,3,3,3,5);
 
 INSERT INTO Reviews(Customer_ID, Seller_ID,Item_ID,Rating,Review)

@@ -1,0 +1,15 @@
+First, be sure to have mysql and mysql-workbench installed.
+
+Open mysql using the following:
+
+mysql -u root -p
+
+You will be asked to enter your root password.
+
+Next, create a new database called data:
+
+CREATE DATABASE data;
+
+Now, open MYSQL workbench and connect to the local instance.
+Open the 'createTables.sql' script and execute it using the lightning symbol.
+Now that the table are created, do the same with 'insertValues.sql' to insert mock data.
