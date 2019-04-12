@@ -29,10 +29,10 @@ VALUES
   (1, 'CC', 4155100020003000, '2022-01-01'),
   (2, 'DC', 4155700040009000, '2023-06-01');
 
-INSERT INTO Shipment(Address_ID, Carrier, Speed)
+INSERT INTO Shipment(Address_ID, Carrier, Speed,Ship_Date)
 VALUES
-  (1,'UPS', 'Standard'),
-  (2,'FedEx', 'Expedited');
+  (1,'UPS', 'Standard', CURDATE()),
+  (2,'FedEx', 'Expedited',CURDATE());
 
 INSERT INTO Inventory(Item_ID, Seller_ID, Quantity, Price)
 VALUES
