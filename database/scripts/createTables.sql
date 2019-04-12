@@ -1,4 +1,4 @@
-USE database;
+USE data;
 
 CREATE TABLE IF NOT EXISTS Seller (
   ID int AUTO_INCREMENT,
@@ -16,8 +16,8 @@ CREATE TABLE IF NOT EXISTS Customer (
 );
 
 CREATE TABLE IF NOT EXISTS Address(
-  Customer_ID int NOT NULL,
   ID int AUTO_INCREMENT NOT NULL,
+  Customer_ID int NOT NULL,
   City varchar(30) NOT NULL,
   State char(2) NOT NULL,
   Street_Name varchar(20) NOT NULL,
@@ -27,8 +27,8 @@ CREATE TABLE IF NOT EXISTS Address(
   PRIMARY KEY (ID)
 );
 CREATE TABLE IF NOT EXISTS Item (
-  ID int,
-  Name varchar(20) NOT NULL,
+  ID int AUTO_INCREMENT NOT NULL,
+  Item_Name varchar(20) NOT NULL,
   Description varchar(500),
   PRIMARY KEY (ID)
 );
@@ -40,6 +40,16 @@ CREATE TABLE IF NOT EXISTS Payment(
   Card_Expiration DATE NOT NULL,
   PRIMARY KEY (ID)
 );
+
+CREATE TABLE IF NOT EXISTS Shipment(
+  ID int AUTO_INCREMENT NOT NULL,
+  Address_ID int NOT NULL,
+  Carrier varchar(10) NOT NULL,
+  Speed varchar(9) NOT NULL CHECK (Speed in ('Expedited', 'Standard')),
+  FOREIGN KEY (Address_ID) REFERENCES Address(ID),
+  PRIMARY KEY (ID)
+);
+
 CREATE TABLE IF NOT EXISTS Orders(
   ID BIGINT AUTO_INCREMENT NOT NULL,
   Shipment_ID int NOT NULL,
@@ -52,7 +62,7 @@ CREATE TABLE IF NOT EXISTS Orders(
   FOREIGN KEY (Customer_ID) REFERENCES Customer(ID),
   FOREIGN KEY (Seller_ID) REFERENCES Seller(ID),
   FOREIGN KEY (Item_ID) REFERENCES Item(ID),
-  FOREIGN KEY (Payment_ID) REFERENCES Payment(Payment_ID),
+  FOREIGN KEY (Payment_ID) REFERENCES Payment(ID),
   PRIMARY KEY (ID,Customer_ID,Seller_ID,Item_ID)
 );
 CREATE TABLE IF NOT EXISTS Inventory(
@@ -63,14 +73,6 @@ CREATE TABLE IF NOT EXISTS Inventory(
   FOREIGN KEY (Seller_ID) REFERENCES Seller(ID),
   FOREIGN KEY (Item_ID) REFERENCES Item(ID),
   PRIMARY KEY (Item_ID, Seller_ID)
-);
-CREATE TABLE IF NOT EXISTS Shipment(
-  ID int AUTO_INCREMENT NOT NULL,
-  Address_ID int NOT NULL,
-  Carrier varchar(10) NOT NULL,
-  Speed varchar(9) NOT NULL CHECK (Speed in ('Expedited', 'Standard')),
-  FOREIGN KEY (Address_ID) REFERENCES Address(ID),
-  PRIMARY KEY (ID)
 );
 
 CREATE TABLE IF NOT EXISTS Reviews(

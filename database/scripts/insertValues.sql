@@ -1,4 +1,4 @@
-USE database;
+USE data;
 
 INSERT INTO Seller(Name, Phone)
 VALUES
@@ -11,31 +11,31 @@ VALUES
   ('Joe', 'Wilson', 'joseph.wilson@stonybrook.edu', 44444444444),
   ('Judy', 'Chen', 'ju-hisu.chen@stonybrook.edu', 5555555555);
 
-INSERT INTO Address(Customer_ID, City, State, Street_Address, Street_Number, Apt_Number)
-VALUES
-  (1, 'Rocky Point', 'NY', 'Odin', 20, 1),
-  (2, 'Fairbanks, 'AK', 'Moose', 20, 1);
-
-INSERT INTO ITEM(Name, Description)
+INSERT INTO Item(Item_Name, Description)
 VALUES
   ('Earphones', 'Things that go in your ear for listening to stuff'),
   ('Pineapple', 'The best thing to put on pizza'),
   ('Silky Flowers', 'Total real silk flowers');
 
+
+INSERT INTO Address(Customer_ID, City, State, Street_Name, Street_Number, Apt_Number)
+VALUES
+  (1, 'Rocky Point', 'NY', 'Odin', 20, 1),
+  (2, 'Fairbanks','AK', 'Moose', 20, 1);
+
 INSERT INTO Payment(Customer_ID, Payment_Type, Card_Number, Card_Expiration)
 VALUES
---For date, format is EOMONTH(MM/DD/YYYY) but day should always be 01 to start. We will calculate the end of month with EOMONTH
-  (1, 'GC', 4155330033003300, EOMONTH('09/01/2021')),
-  (1, 'CC', 4155100020003000, EOMONTH('11/01/2022')),
-  (2, 'DC', 4155700040009000, EOMONTH('06/01/2023'));
+  (1, 'GC', 4155330033003300, '2024-05-01'),
+  (1, 'CC', 4155100020003000, '2022-01-01'),
+  (2, 'DC', 4155700040009000, '2023-06-01');
 
-INSERT INTO Shipment(Address_ID, Customer_ID, Carrier, Speed)
+INSERT INTO Shipment(Address_ID, Carrier, Speed)
 VALUES
-  (1,1,'UPS', 'Standard'),
-  (2,2, 'FedEx', 'Expedited');
+  (1,'UPS', 'Standard'),
+  (2,'FedEx', 'Expedited');
 
 INSERT INTO Inventory(Item_ID, Seller_ID, Quantity, Price)
-VALUES 
+VALUES
   (1,1,10,100.00),
   (2,2,420,1.25),
   (1,2,420,1.24),
@@ -60,14 +60,3 @@ INSERT INTO Employee(Supervisor_ID, F_Name, L_Name, Role)
 VALUES
   (NULL, 'Judy', 'Chen', 'CEO'),
   (1,'Joe', 'Wilson', 'Programmer');
-
-
-  
- 
- 
- 
-
-
-  
-
-  
