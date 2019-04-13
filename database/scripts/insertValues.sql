@@ -55,7 +55,7 @@ INSERT INTO Cart(Customer_ID, Item_ID, Quantity, Seller_ID)
 VALUES
   (1,3,10,3);
 
-INSERT INTO Employee(Supervisor_ID, F_Name, L_Name, Role)
+INSERT INTO Employee(Supervisor_ID, F_Name, L_Name, Role, Email)
 VALUES
-  (NULL, 'Judy', 'Chen', 'CEO'),
-  (1,'Joe', 'Wilson', 'Programmer');
+  (NULL, 'Judy', 'Chen', 'CEO', 'Judy.Chen@site.com'),
+  (1,'Joe', 'Wilson', 'Programmer', 'Joe.Wilson@site.com');
