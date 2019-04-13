@@ -56,7 +56,7 @@ CREATE TABLE IF NOT EXISTS Shipment(
 );
 
 CREATE TABLE IF NOT EXISTS Orders(
-  Shipment_ID int UNIQUE NOT NULL,
+  Shipment_ID int NOT NULL,
   Customer_ID int NOT NULL,
   Seller_ID int NOT NULL,
   Item_ID int NOT NULL,
@@ -67,7 +67,7 @@ CREATE TABLE IF NOT EXISTS Orders(
   FOREIGN KEY (Seller_ID) REFERENCES Seller(ID),
   FOREIGN KEY (Item_ID) REFERENCES Item(ID),
   FOREIGN KEY (Payment_ID) REFERENCES Payment(ID),
-  PRIMARY KEY (Shipment_ID)
+  PRIMARY KEY (Shipment_ID,Item_ID,Seller_ID)
 );
 CREATE TABLE IF NOT EXISTS Inventory(
   Item_ID int NOT NULL,
