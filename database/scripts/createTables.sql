@@ -35,11 +35,12 @@ CREATE TABLE IF NOT EXISTS Item (
   Unique(Item_Name, Description)
 );
 CREATE TABLE IF NOT EXISTS Payment(
-  Customer_ID int,
+  Customer_ID int NOT NULL,
   ID int AUTO_INCREMENT NOT NULL,
   Payment_Type char(2) NOT NULL CHECK (Payment_Type in ('GC','CC','DC')),
   Card_Number BIGINT NOT NULL,
   Card_Expiration DATE NOT NULL,
+  FOREIGN KEY (Customer_ID) REFERENCES Customer(ID),                                                      
   PRIMARY KEY (ID),
   Unique(Customer_ID, Card_Number)                                                    
 );
