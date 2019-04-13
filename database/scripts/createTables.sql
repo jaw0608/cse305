@@ -62,6 +62,7 @@ CREATE TABLE IF NOT EXISTS Orders(
   Item_ID int NOT NULL,
   Payment_ID int NOT NULL,
   Quantity int NOT NULL,
+  Item_Price double NOT NULL,
   FOREIGN KEY (Shipment_ID) REFERENCES Shipment(ID),
   FOREIGN KEY (Customer_ID) REFERENCES Customer(ID),
   FOREIGN KEY (Seller_ID) REFERENCES Seller(ID),
