@@ -106,6 +106,7 @@ CREATE TABLE IF NOT EXISTS Employee(
   Supervisor_ID int,
   F_Name varchar(20) NOT NULL,
   L_NAME varchar(20) NOT NULL,
+  Email varchar(320) UNIQUE NOT NULL,
   Role varchar(40) NOT NULL,
   FOREIGN KEY (Supervisor_ID) REFERENCES Employee(ID),
   PRIMARY KEY (ID)
