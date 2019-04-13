@@ -22,7 +22,7 @@ CREATE TABLE IF NOT EXISTS Address(
   State char(2) NOT NULL,
   Street_Name varchar(20) NOT NULL,
   Street_Number int NOT NULL,
-  Apt_Number int NOT NULL,
+  Apt_Number int,
   FOREIGN KEY (Customer_ID) REFERENCES Customer(ID),
   PRIMARY KEY (ID),
   UNIQUE(Customer_ID,City,State,Street_Name,Street_Number,Apt_Number)
