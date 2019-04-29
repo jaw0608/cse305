@@ -112,3 +112,13 @@ CREATE TABLE IF NOT EXISTS Employee(
   FOREIGN KEY (Supervisor_ID) REFERENCES Employee(ID),
   PRIMARY KEY (ID)
 );
+CREATE TABLE IF NOT EXISTS CLogin(
+  ID int UNIQUE NOT NULL,
+  Password varchar(20) NOT NULL,
+  FOREIGN KEY(ID) REFERENCES Customer(ID),                                              
+);
+CREATE TABLE IF NOT EXISTS SLogin(
+  ID int UNIQUE NOT NULL,
+  Password varchar(20) NOT NULL,
+  FOREIGN KEY(ID) REFERENCES Seller(ID),                                              
+);
