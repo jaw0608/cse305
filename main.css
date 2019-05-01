@@ -364,7 +364,7 @@ img {
 .items {
     padding-top: 1%;
     margin: auto;
-    vertical-align: middle;
+    width: 75%;
 }
 
 .btn {
@@ -384,7 +384,7 @@ img {
 
 .column {
     float: left;
-    width: 40%;
+    width: 45%;
     padding: 10px;
     border: 1px solid #09242F;
 }
@@ -423,3 +423,45 @@ img {
     transition-delay: .5s;
     background-size: 120%;
 }
+
+/*about*/
+#about h1{
+    color: black;
+    text-align: center;
+    margin: auto;
+    vertical-align: middle;
+    width: 43%;
+    padding-top: 25%;
+}
+
+/*cart*/
+#cart h1{
+    color: black;
+    text-align: center;
+    width: 43%;
+}
+
+.columnCart {
+    margin: auto;
+    width: 75%;
+    border: 1px solid #09242F;
+}
+
+.columnCart h2,
+.columnCart p {
+    text-align: center;
+    color: white;
+    text-shadow: 0 0 4px #09242F;
+}
+
+#total {
+    float: right;
+    padding-right: 15%;
+}
+
+#total button {
+    width: auto;
+    padding: 10px 18px;
+    background-color: #0CB093;
+}
+
