@@ -1,12 +1,16 @@
-body {font-family: Arial, Helvetica, sans-serif;}
-
-/* Add a black background color to the top navigation bar */
-.topnav {
-    overflow: hidden;
-    background-color: #e9e9e9;
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    width: 80%;
+    margin: auto;
 }
 
-/* Style the links inside the navigation bar */
+/*navbar*/
+.topnav {
+    overflow: hidden;
+    background-color: white;
+    padding-bottom: 1%;
+}
+
 .topnav a {
     float: left;
     display: block;
@@ -15,31 +19,48 @@ body {font-family: Arial, Helvetica, sans-serif;}
     padding: 14px 16px;
     text-decoration: none;
     font-size: 17px;
+    transition: all 0.5s;
+    cursor: pointer;
 }
 
-/* Change the color of links on hover */
-.topnav a:hover {
-    background-color: #ddd;
-    color: black;
+.topnav a span {
+    cursor: pointer;
+    display: inline-block;
+    position: relative;
+    transition: 0.5s;
 }
 
-/* Style the "active" element to highlight the current page */
-.topnav a.active {
-    background-color: #2196F3;
-    color: white;
+.topnav span:after {
+    content: '\00bb';
+    position: absolute;
+    opacity: 0;
+    top: 0;
+    right: -20px;
+    transition: 0.5s;
 }
 
-/* Style the search box inside the navigation bar */
+.topnav a:hover span {
+    color: #0CB093;
+    padding-right: 25px;
+}
+
+.topnav a:hover span:after {
+    opacity: 1;
+    right: 0;
+}
+
 .topnav .left {
     float: right;
-    padding: 6px;
+    display: block;
+    padding: 14px 16px;
     border: none;
-    margin-top: 8px;
-    margin-right: 16px;
     font-size: 17px;
 }
 
-/* When the screen is less than 600px wide, stack the links and the search field vertically instead of horizontally */
+.topnav .left a:hover {
+    color: #0CB093;
+}
+
 @media screen and (max-width: 600px) {
 
     .topnav a {
@@ -53,56 +74,138 @@ body {font-family: Arial, Helvetica, sans-serif;}
 
 }
 
-/*items*/
-
-.items {
-    padding-top: 1%;
+/*login*/
+#login button {
+    background-color: #0CB093;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 100%;
 }
 
-/* Style the buttons */
-.btn {
-    border: none;
-    outline: none;
-    padding: 12px 16px;
-    background-color: #f1f1f1;
+#login button:hover {
+    opacity: 0.8;
+}
+
+input[type=text],
+input[type=password] {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+#login .cancelbtn {
+    width: auto;
+    padding: 10px 18px;
+    background-color: #f44336;
+    /*    border-radius: 150%;*/
+}
+
+.imgcontainer {
+    text-align: center;
+    margin: 24px 0 12px 0;
+    position: relative;
+}
+
+img.avatar {
+    width: 20%;
+    border-radius: 50%;
+}
+
+.container {
+    padding: 16px;
+}
+
+span.psw {
+    float: right;
+    padding-top: 16px;
+}
+
+.modal {
+    display: none;
+    /* Hidden by default */
+    position: fixed;
+    /* Stay in place */
+    z-index: 1;
+    /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%;
+    /* Full width */
+    height: 100%;
+    /* Full height */
+    overflow: auto;
+    /* Enable scroll if needed */
+    background-color: rgb(0, 0, 0);
+    /* Fallback color */
+    background-color: rgba(0, 0, 0, 0.4);
+    /* Black w/ opacity */
+    padding-top: 60px;
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 5% auto 15% auto;
+    /* 5% from the top, 15% from the bottom and centered */
+    border: 1px solid #888;
+    width: 80%;
+    /* Could be more or less, depending on screen size */
+}
+
+.close {
+    position: absolute;
+    right: 25px;
+    top: 0;
+    color: #000;
+    font-size: 35px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: red;
     cursor: pointer;
 }
 
-.btn:hover {
-    background-color: #ddd;
+.animate {
+    -webkit-animation: animatezoom 0.6s;
+    animation: animatezoom 0.6s
 }
 
-.btn.active {
-    background-color: #666;
-    color: white;
+@-webkit-keyframes animatezoom {
+    from {
+        -webkit-transform: scale(0)
+    }
+
+    to {
+        -webkit-transform: scale(1)
+    }
 }
 
-/* Create two equal columns that floats next to each other */
-.column {
-    float: left;
-    width: 40%;
-    padding: 10px;
+@keyframes animatezoom {
+    from {
+        transform: scale(0)
+    }
 
+    to {
+        transform: scale(1)
+    }
 }
 
-/* Clear floats after the columns */
-.row:after {
-    content: "";
-    display: table;
-    clear: both;
-}
+@media screen and (max-width: 300px) {
+    span.psw {
+        display: block;
+        float: none;
+    }
 
-.sidenav {
-    height: 100%;
-    width: 0;
-    position: fixed;
-    z-index: 1;
-    top: 0;
-    left: 0;
-    background-color: #111;
-    overflow-x: hidden;
-    transition: 0.5s;
-    padding-top: 60px;
+    .cancelbtn {
+        width: 100%;
+    }
 }
 
 /*popular*/
@@ -114,14 +217,12 @@ img {
     vertical-align: middle;
 }
 
-/* Slideshow container */
 .popular {
     max-width: 1000px;
     position: relative;
     margin: auto;
 }
 
-/* Next & previous buttons */
 .prev,
 .next {
     cursor: pointer;
@@ -138,30 +239,16 @@ img {
     user-select: none;
 }
 
-/* Position the "next button" to the right */
 .next {
     right: 0;
     border-radius: 3px 0 0 3px;
 }
 
-/* On hover, add a black background color with a little bit see-through */
 .prev:hover,
 .next:hover {
     background-color: rgba(0, 0, 0, 0.8);
 }
 
-/* Caption text */
-.text {
-    color: #f2f2f2;
-    font-size: 15px;
-    padding: 8px 12px;
-    position: absolute;
-    bottom: 8px;
-    width: 100%;
-    text-align: center;
-}
-
-/* The dots/bullets/indicators */
 .dot {
     cursor: pointer;
     height: 15px;
@@ -178,7 +265,6 @@ img {
     background-color: #717171;
 }
 
-/* Fading animation */
 .fade {
     -webkit-animation-name: fade;
     -webkit-animation-duration: 1.5s;
@@ -206,7 +292,6 @@ img {
     }
 }
 
-/* On smaller screens, decrease text size */
 @media only screen and (max-width: 300px) {
 
     .prev,
@@ -221,17 +306,34 @@ img {
     padding-top: 1%;
 }
 
+#main :hover {
+    color: #0CB093;
+}
+
+.sidenav {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #09242F;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 60px;
+}
+
 .sidenav a {
     padding: 8px 8px 8px 32px;
     text-decoration: none;
     font-size: 25px;
-    color: #818181;
+    color: white;
     display: block;
     transition: 0.3s;
 }
 
 .sidenav a:hover {
-    color: #f1f1f1;
+    color: #0CB093;
 }
 
 .sidenav .closebtn {
@@ -244,6 +346,7 @@ img {
 
 #body {
     transition: margin-left .5s;
+    /*    transition: margin .5s;*/
     padding: 16px;
 }
 
@@ -257,144 +360,66 @@ img {
     }
 }
 
-/*login*/
-/* Set a style for all buttons */
-#login button {
-  background-color: #4CAF50;
-  color: white;
-  padding: 14px 20px;
-  margin: 8px 0;
-  border: none;
-  cursor: pointer;
-  width: 100%;
+/*items*/
+.items {
+    padding-top: 1%;
+    margin: auto;
+    vertical-align: middle;
 }
 
-#login button:hover {
-  opacity: 0.8;
-}
-
-/* Full-width input fields */
-input[type=text], input[type=password] {
-  width: 100%;
-  padding: 12px 20px;
-  margin: 8px 0;
-  display: inline-block;
-  border: 1px solid #ccc;
-  box-sizing: border-box;
-}
-
-/* Extra styles for the cancel button */
-#login .cancelbtn {
-    width: auto;
-    padding: 10px 18px;
-    background-color: #f44336;
-/*    border-radius: 150%;*/
-}
-
-/* Center the image and position the close button */
-.imgcontainer {
-    text-align: center;
-    margin: 24px 0 12px 0;
-    position: relative;
-}
-
-img.avatar {
-    width: 20%;
-    border-radius: 50%;
-}
-
-.container {
-    padding: 16px;
-}
-
-span.psw {
-    float: right;
-    padding-top: 16px;
-}
-
-/* The Modal (background) */
-.modal {
-    display: none;
-    /* Hidden by default */
-    position: fixed;
-    /* Stay in place */
-    z-index: 1;
-    /* Sit on top */
-    left: 0;
-    top: 0;
-    width: 100%;
-    /* Full width */
-    height: 100%;
-    /* Full height */
-    overflow: auto;
-    /* Enable scroll if needed */
-    background-color: rgb(0, 0, 0);
-    /* Fallback color */
-    background-color: rgba(0, 0, 0, 0.4);
-    /* Black w/ opacity */
-    padding-top: 60px;
-}
-
-/* Modal Content/Box */
-.modal-content {
-    background-color: #fefefe;
-    margin: 5% auto 15% auto;
-    /* 5% from the top, 15% from the bottom and centered */
-    border: 1px solid #888;
-    width: 80%;
-    /* Could be more or less, depending on screen size */
-}
-
-/* The Close Button (x) */
-.close {
-    position: absolute;
-    right: 25px;
-    top: 0;
-    color: #000;
-    font-size: 35px;
-    font-weight: bold;
-}
-
-.close:hover,
-.close:focus {
-    color: red;
+.btn {
+    width: 100px;
+    align-content: center;
+    border: 1px solid #09242F;
+    outline: none;
+    padding: 12px 16px;
+    background-color: white;
     cursor: pointer;
 }
 
-/* Add Zoom Animation */
-.animate {
-    -webkit-animation: animatezoom 0.6s;
-    animation: animatezoom 0.6s
+.btn:hover {
+    background-color: #09242F;
+    color: #0CB093;
 }
 
-@-webkit-keyframes animatezoom {
-    from {
-        -webkit-transform: scale(0)
-    }
-
-    to {
-        -webkit-transform: scale(1)
-    }
+.column {
+    float: left;
+    width: 40%;
+    padding: 10px;
+    border: 1px solid #09242F;
 }
 
-@keyframes animatezoom {
-    from {
-        transform: scale(0)
-    }
-
-    to {
-        transform: scale(1)
-    }
+.column h2,
+.column p {
+    text-align: center;
+    color: white;
+    text-shadow: 0 0 4px #09242F;
 }
 
-/* Change styles for span and cancel button on extra small screens */
-@media screen and (max-width: 300px) {
-    span.psw {
-        display: block;
-        float: none;
-    }
+/*
+.row {
+    vertical-align: center;
+    margin: auto;
+}
+*/
 
-    .cancelbtn {
-        width: 100%;
-    }
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+#item1 {
+    background: url("images/switch.jpg");
+    background-repeat: no-repeat;
+    background-size: 100%;
+    margin: auto;
+    background-position: center;
+    opacity: 0.5;
+}
+
+#item1 :hover {
+    opacity: 1;
+    transition-delay: .5s;
+    background-size: 120%;
 }
