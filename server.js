@@ -154,7 +154,7 @@ app.post("/add_payment_method",function(req,res){
   var cardMonth = req.body.Card_Month;
   var int_d = new Date(cardYear, cardMonth+1,1);
   var cardExpiration = new Date(int_d - 1);
-  getCustomerID(email).then(function(result){
+  getCustomerID(email,res).then(function(result){
     var id = result;
     var qry = `INSERT INTO Payment(Customer_ID,Payment_Type,Card_Number,Card_Expiration) VALUES (${id},${type},${cardNum},${con.escape(cardExpiration)})`;
     query(qry,res).then(function(result){
@@ -171,7 +171,7 @@ app.post("/add_address",function(req,res){
   var street_num = req.body.Street_Number;
   var apt_number = 0;
   if(req.body.Apt_Number) apt_number = req.body.Apt_Number;
-  getCustomerID(email).then(function(result){
+  getCustomerID(email,res).then(function(result){
     var qry = `Insert Into Address(Customer_ID,City,State,Street_Name,Street_Number,Apt_Number)
     VALUES (${result},${city},${state},${street_name},${street_num},${apt_number})`;
     query(qry,res).then(function(result){
@@ -180,7 +180,30 @@ app.post("/add_address",function(req,res){
   });
 });
 
-
+app.post("/add_to_cart",function(req,res){
+  var seller = toSQLString(req.body.Seller);
+  var customer = toSQLString(req.body.Email);
+  var i_id = req.body.Item_ID;
+  var quantity = req.body.Quantity;
+  getSellerID(seller,res).then(function(s_id){
+    getCustomerID(customer,res).then(function(c_id){
+      var qry = `Select * from Cart where Item_ID = ${i_id} and Customer_ID = ${c_id} and Seller_ID = ${s_id}`
+      query(qry,res).then(function(result){
+        if(result[0]){
+          quantity +=result[0].Quantity;
+          qry = `Update Cart Set Quantity = ${quantity} where Item_ID = ${i_id} and Customer_ID = ${c_id} and Seller_ID = ${s_id}`
+        }
+        else {
+          qry = `Insert Into Cart(Customer_ID,Item_ID,Seller_ID,Quantity)
+          VALUES (${c_id},${i_id},${s_id},${quantity})`;
+        }
+        query(qry,res).then(function(result){
+          res.json({"success":1});
+        });
+      });
+    });
+  })
+});
 
 
 
@@ -228,6 +251,7 @@ function query(qry,res){
   return new Promise( ( resolve, reject ) => {
             con.query(qry,function(err,result){
               if(err) {
+                console.log(res);
                 res.json({'err':err});
                 reject(err);
               }
