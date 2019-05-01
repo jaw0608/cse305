@@ -4,7 +4,8 @@
   "description": "Project with Judy and Joe",
   "main": "index.js",
   "scripts": {
-    "test": "test"
+    "test": "test",
+    "start": "node server.js"
   },
   "repository": {
     "type": "git",
@@ -17,6 +18,8 @@
   },
   "homepage": "https://github.com/jaw0608/cse305#readme",
   "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.16.4",
     "mysql": "^2.16.0"
   }
 }

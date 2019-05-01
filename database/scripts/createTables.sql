@@ -113,12 +113,12 @@ CREATE TABLE IF NOT EXISTS Employee(
   PRIMARY KEY (ID)
 );
 CREATE TABLE IF NOT EXISTS CLogin(
-  ID int UNIQUE NOT NULL,
+  Email varchar(320) PRIMARY KEY,
   Password varchar(20) NOT NULL,
-  FOREIGN KEY(ID) REFERENCES Customer(ID),                                              
+  FOREIGN KEY(Email) REFERENCES Customer(Email)                                              
 );
 CREATE TABLE IF NOT EXISTS SLogin(
-  ID int UNIQUE NOT NULL,
+  Name varchar(30) PRIMARY KEY ,
   Password varchar(20) NOT NULL,
-  FOREIGN KEY(ID) REFERENCES Seller(ID),                                              
+  FOREIGN KEY(Name) REFERENCES Seller(Name)                                             
 );
