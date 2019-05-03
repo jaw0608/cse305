@@ -24,9 +24,6 @@ app.use(express.json());       // to support JSON-encoded bodies
 app.use(express.urlencoded({extended: true})); // to support URL-encoded bodies
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))
 //customer. returns new id to client
-app.get("/",function(req,res){
-  res.send("HELLO");
-});
 
 app.post("/create_customer",function(req,res){
   var fname = toSQLString(req.body.F_Name);
@@ -156,9 +153,10 @@ app.post("/add_payment_method",function(req,res){
   var cardExpiration = new Date(int_d - 1);
   getCustomerID(email,res).then(function(result){
     var id = result;
-    var qry = `INSERT INTO Payment(Customer_ID,Payment_Type,Card_Number,Card_Expiration) VALUES (${id},${type},${cardNum},${con.escape(cardExpiration)})`;
+    var qry = `INSERT INTO Payment(Customer_ID,Payment_Type,Card_Number,Card_Expiration)
+    VALUES (${id},${type},${cardNum},${con.escape(cardExpiration)})`;
     query(qry,res).then(function(result){
-      res.json({"success":1});
+      res.json({"success":1,"id":result.insertId});
     });
   });
 });
@@ -172,10 +170,18 @@ app.post("/add_address",function(req,res){
   var apt_number = 0;
   if(req.body.Apt_Number) apt_number = req.body.Apt_Number;
   getCustomerID(email,res).then(function(result){
-    var qry = `Insert Into Address(Customer_ID,City,State,Street_Name,Street_Number,Apt_Number)
-    VALUES (${result},${city},${state},${street_name},${street_num},${apt_number})`;
+    var qry = `Select ID from Address where Customer_ID=${result} and City=${city} and State=${state} and
+    Street_Name = ${street_name} and Street_Number = ${street_num} and Apt_Number = ${apt_number}`
     query(qry,res).then(function(result){
-      res.json({"success":1});
+      if(result[0])
+        res.json({"success":1,"id":result[0].ID});
+      else {
+        qry = `Insert Into Address(Customer_ID,City,State,Street_Name,Street_Number,Apt_Number)
+        VALUES (${result},${city},${state},${street_name},${street_num},${apt_number})`;
+        query(qry,res).then(function(result){
+          res.json({"success":1,"id":result.insertId});
+        });
+      }
     });
   });
 });
@@ -205,6 +211,137 @@ app.post("/add_to_cart",function(req,res){
   })
 });
 
+app.post("/get_payment_methods",function(req,res){
+  var email = toSQLString(req.body.Email);
+  getCustomerID(email).then(function(result){
+    var qry = `SELECT * from User_Payment_Methods where Customer_ID = ${result}`;
+    query(qry,res).then(function(result){
+      res.json(result);
+    });
+  });
+});
+
+app.post("/get_addresses",function(req,res){
+  var email = toSQLString(req.body.Email);
+  getCustomerID(email).then(function(result){
+    var qry = `SELECT * from User_Address where Customer_ID = ${result}`;
+    query(qry,res).then(function(result){
+      res.json(result);
+    });
+  });
+});
+
+app.post("/get_cart",function(req,res){
+  var customer_email = toSQLString(req.body.Email);
+  getCustomerID(customer_email).then(function(c_id){
+    var qry = `Select * from User_Carts where Customer_ID=${c_id}`;
+    query(qry,res).then(function(results){
+      res.json(results);
+    });
+  });
+});
+app.post("/remove_from_cart",function(req,res){
+  var seller = toSQLString(req.body.Seller);
+  var email = toSQLString(req.body.Email);
+  var i_id = req.body.Item_ID;
+  var quantity = req.body.Quantity;
+  getSellerID(seller,res).then(function(s_id){
+    getCustomerID(email,res).then(function(c_id){
+      var qry = `Select * from Cart where Item_ID = ${i_id} and Customer_ID = ${c_id} and Seller_ID = ${s_id}`;
+      query(qry,res).then(function(result){
+        if(result[0]){
+          quantity = result[0].Quantity-quantity;
+          if(quantity>0){ //is not removing
+            qry =   `Update Cart Set Quantity = ${quantity} where Item_ID = ${i_id} and Customer_ID = ${c_id} and Seller_ID = ${s_id}`
+          }
+          else {
+            qry = `Delete from Cart  where Item_ID = ${i_id} and Customer_ID = ${c_id} and Seller_ID = ${s_id}`;
+          }
+          query(qry,res).then(function(result){
+            res.json({"success":1});
+          });
+        }
+      });
+    });
+  });
+});
+
+app.post("/place_order",function(req,res){
+  var a_id = req.body.Address_ID;
+  var p_id = req.body.Payment_ID;
+  var email = toSQLString(req.body.Email);
+  var carrier = toSQLString(req.body.Carrier);
+  var date = new Date();
+  var speed = toSQLString(req.body.Speed);
+  getCustomerID(email).then(function(c_id){
+    var qry = `Insert Into Shipment(Address_ID,Carrier,Ship_Date,Speed)
+    VALUES(${a_id},${carrier},${con.escape(date)},${speed})`
+    query(qry,res).then(function(result){
+      var ship_id = result.insertId;
+      qry = `Select * from User_Carts where Customer_ID=${c_id}`;
+      query(qry,res).then(function(results){
+        for(i=0; i<results.length; i++){
+          var s_id = results[i].Seller_ID;
+          var i_id = results[i].Item_ID;
+          var price = results[i].Price;
+          var quantity = results[i].Quantity;
+          order_item(res,c_id,s_id,i_id,quantity).then(function(result){
+            qry = `INSERT INTO Orders(Shipment_ID,Customer_ID,Seller_ID,Item_ID,Quantity,Item_Price,Payment_ID)
+            VALUES(${ship_id},${c_id},${s_id},${i_id},${quantity},${price},${p_id})`;
+            query(qry,res);
+          });
+        }
+        res.json({"success":1});
+      });
+    });
+  });
+});
+
+app.post("/add_review",function(req,res){
+  var email = toSQLString(req.body.Email);
+  var seller = toSQLString(req.body.Seller);
+  var item_id = req.body.Item_ID;
+  var review = toSQLString(req.body.Review);
+  var rating = req.body.Rating;
+  getCustomerID(email,res).then(function(c_id){
+    getSellerID(seller,res).then(function(s_id){
+      var qry=`INSERT INTO Reviews (Customer_ID,Seller_ID,Item_ID,Rating,Review)
+      VALUES (${c_id},${s_id},${item_id},${rating},${review})`;
+      query(qry,res).then(function(result){
+        res.json({"success":1});
+      });
+    });
+  });
+});
+
+app.post("/get_reviews",function(req,res){
+  var i_id = req.body.Item_ID;
+  var seller = toSQLString(req.body.Seller);
+  getSellerID(seller,res).then(function(s_id){
+    var qry = `Select * from User_Reviews where Seller_ID = ${s_id} and Item_ID = ${i_id}`
+    query(qry,res).then(function(result){
+      res.json(result);
+    });
+  });
+});
+
+app.post("/get_sellers",function(req,res){
+  query("Select * from Seller",res).then(function(results){
+    res.json(results);
+  });
+});
+
+app.post("/get_inventory",function(req,res){
+  query("Select * from Inventory",res).then(function(results){
+    res.json(results);
+  });
+});
+
+app.post("/popular_items",function(req,res){
+  query("Select * from Popular",res).then(function(result){
+    res.json(result);
+  });
+});
 
 
 
@@ -225,7 +362,7 @@ function getSellerID(name,res){
                 resolve(result[0].ID);
               else {
                 res.json({'err':"INVALID_USER"});
-                reject(-1);
+                reject(0);
               }
             });
         });
@@ -248,6 +385,7 @@ function getCustomerID(email,res){
         });
 }
 function query(qry,res){
+  qry = qry.replace(/\n|\r/g, "");
   return new Promise( ( resolve, reject ) => {
             con.query(qry,function(err,result){
               if(err) {
@@ -258,4 +396,41 @@ function query(qry,res){
               resolve(result);
             });
         });
+}
+function remove_from_cart(res,c_id,s_id,i_id,quantity){
+  return new Promise((resolve,reject)=>{
+    var qry = `Select * from Cart where Item_ID = ${i_id} and Customer_ID = ${c_id} and Seller_ID = ${s_id}`;
+    query(qry,res).then(function(result){
+      if(result[0]){
+        quantity = result[0].Quantity-quantity;
+        if(quantity>0){ //is not removing
+          qry =   `Update Cart Set Quantity = ${quantity} where Item_ID = ${i_id} and Customer_ID = ${c_id} and Seller_ID = ${s_id}`
+        }
+        else {
+          qry = `Delete from Cart  where Item_ID = ${i_id} and Customer_ID = ${c_id} and Seller_ID = ${s_id}`;
+        }
+        query(qry,res).then(function(result){
+          resolve(1);
+        },function(err){reject(err)});
+      }
+    },function(err){reject(err);});
+  });
+}
+function order_item(res,c_id,s_id,i_id,quantity){
+  return new Promise((resolve,reject)=>{
+    var qry = `Select Quantity from Inventory where Item_ID = ${i_id} and Seller_ID=${s_id}`;
+    query(qry,res).then(function(result){
+      if(result[0] && result[0].Quantity>=quantity){
+        qry = `Update Inventory Set Quantity = ${result[0].Quantity-quantity} Where Item_ID = ${i_id} and Seller_ID=${s_id}`;
+        query(qry,res).then(function(result){
+          remove_from_cart(res,c_id,s_id,i_id,quantity).then(function(result){
+            resolve(1);
+          },function(err){reject(err);});
+        },function(err){reject(err);});
+      }
+      else {
+        reject(-1);
+      }
+    });
+  });
 }
