@@ -150,7 +150,7 @@ span.psw {
 
 .modal-content {
     background-color: #fefefe;
-    margin: 5% auto 15% auto;
+    margin: 0% auto 15% auto;
     /* 5% from the top, 15% from the bottom and centered */
     border: 1px solid #888;
     width: 80%;
@@ -431,7 +431,7 @@ img {
     margin: auto;
     vertical-align: middle;
     width: 43%;
-    padding-top: 25%;
+    padding-top: 23%;
 }
 
 /*cart*/
