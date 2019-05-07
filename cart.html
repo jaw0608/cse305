@@ -3,13 +3,159 @@
 
 <head>
     <title>CSE 305</title>
+    <script
+  src="https://code.jquery.com/jquery-3.4.1.js"
+  integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+  crossorigin="anonymous"></script>
     <link rel="stylesheet" type="text/css" href="main.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
+<script>
+  $(function() {
+    var email = sessionStorage.Email;
+    var total=0;
+    if(email.length!=0){
+      $.ajax({
+
+          'url' : '/get_cart',
+          'type' : 'POST',
+          'data': {
+            "Email": email
+          },
+          'success' : function(items) {
+            if(items.length>0){
+              $("#cart_one").html(items[0].Item_Name);
+              $("#cart_one_d").html(items[0].Description);
+              $("#cart_one_q").html(items[0].Quantity);
+              total +=items[0].Price *items[0].Quantity;
+            }
+            if(items.length>1){
+              $("#cart_two").html(items[1].Item_Name);
+              $("#cart_two_d").html(items[1].Description);
+              $("#cart_two_q").html(items[1].Quantity);
+              total +=items[1].Price *items[1].Quantity;
+            }
+            if(items.length>2){
+              $("#cart_three").html(items[2].Item_Name);
+              $("#cart_three_d").html(items[2].Description);
+              $("#cart_three_q").html(items[2].Quantity);
+              total +=items[2].Price *items[2].Quantity;
+            }
+            if(items.length>3){
+              $("#cart_four").html(items[3].Item_Name);
+              $("#cart_four_d").html(items[3].Description);
+              $("#cart_four_q").html(items[3].Quantity);
+              total +=items[3].Price *items[3].Quantity;
+            }
+            $("#t_price").html("Total Price: "+total);
+        }
+      });
+    }
+    $("#loginb").click(function(){
+      var email = $("#uname").val();
+      console.log(email);
+      var pass = $("#password").val();
+      $.ajax({
+
+          'url' : '/login_customer',
+          'type' : 'POST',
+          'data': {
+            "Email": email,
+            "Password": pass
+          },
+          'success' : function(id) {
+            if(id.sucess){
+              sessionStorage.Email = email;
+            }
+
+            document.getElementById('login').style.display='none';
+          }
+      });
+    });
+
+    $("#buy").click(function(){
+      if(sessionStorage.Email.length>0){
+        var city = $("#city").val();
+        var state = $("#state").val();
+        var s_name = $("#street_name").val();
+        var s_num = parseInt($("#street_number").val(),10);
+        var apt = $("#apt").val();
+        if(apt.length>0) apt=parseInt(apt,10);
+        else apt=0;
+        $.ajax({
+
+            'url' : '/add_address',
+            'type' : 'POST',
+            'data': {
+              "Email": sessionStorage.Email,
+              "City": city,
+              "State":state,
+              "Street_Name":s_name,
+              "Street_Number":s_num,
+              "Apt_Number":apt
+            },
+            'success' : function(id) {
+              if(id.success){
+                var a_id=id.id;
+                var cardNum = parseInt($("#cardNum").val());
+                var cardMonth = parseInt($("#cardMonth").val());
+                var cardYear = parseInt($("#cardYear").val());
+                var type = $("#cardType").val();
+                $.ajax({
+
+                    'url' : '/add_payment_method',
+                    'type' : 'POST',
+                    'data': {
+                      "Email": sessionStorage.Email,
+                      "Card_Number":cardNum,
+                      "Card_Month":cardMonth,
+                      "Card_Year": cardYear,
+                      "Payment_Type":type
+                    },
+                    'success' : function(id) {
+                      if(id.success){
+                        var p_id=id.id;
+                        $.ajax({
+                          'url':'/place_order',
+                          'type':'POST',
+                          'data':{
+                            "Email":sessionStorage.Email,
+                            "Payment_ID":p_id,
+                            "Address_ID":a_id,
+                            "Carrier": "UPS",
+                            "Speed": "Standard"
+                          },
+                          'success': function(id){
+                            if(id.success){
+                              $("#buy").html("Order completed");
+                            }
+                            else if (id.err) {
+                              $("#buy").html("Order failed. Please try again");
+                            }
+                          }
+                        });
+                      }
+                      else if (id.err) {
+                        $("#buy").html("Order failed. Please try again");
+                      }
+                    }
+                });
+              }
+              else if (id.err) {
+                $("#buy").html("Order failed. Please try again");
+              }
+            }
+        });
+      }
+    });
+
+});
+
+</script>
 
 <body id="body">
     <div class="topnav">
-        <a href="index.html"><span>Home</span></a>
+        <a href="/"><span>Home</span></a>
         <a href="about.html"><span>About</span></a>
         <a class="left" onclick="document.getElementById('login').style.display='block'"><span>Login</span></a>
         <a class="left" href="cart.html"><span>Cart</span></a>
@@ -17,20 +163,20 @@
 
     <div id="login" class="modal">
 
-        <form class="modal-content animate" action="/action_page.php">
+        <form class="modal-content animate">
             <div class="imgcontainer">
                 <span onclick="document.getElementById('login').style.display='none'" class="close" title="Close Modal">&times;</span>
                 <img src="images/icon.png" alt="Avatar" class="avatar">
             </div>
 
             <div class="container">
-                <label for="uname"><b>Username</b></label>
-                <input type="text" placeholder="Enter Username" name="uname" required>
+                <label for="uname"><b>Email</b></label>
+                <input id="uname" type="text" placeholder="Enter Email" name="uname" required>
 
                 <label for="psw"><b>Password</b></label>
-                <input type="password" placeholder="Enter Password" name="psw" required>
+                <input id ="password" type="password" placeholder="Enter Password" name="psw" required>
 
-                <button type="submit">Login</button>
+                <button id = "loginb" type ="button">Login</button>
                 <label>
                     <input type="checkbox" checked="checked" name="remember"> Remember me
                 </label>
@@ -47,27 +193,53 @@
         <h1>Shopping Cart</h1>
         <div class="items">
             <div class="columnCart">
-                <h2>Item 1</h2>
-                <p>Some text..</p>
+                <h2 id= "cart_one">Item 1</h2>
+                <p id = "cart_one_d">Some text..</p>
+                <p id = "cart_one_q">Some quantity..</p>
             </div>
             <div class="columnCart">
-                <h2>Item 2</h2>
-                <p>Some text..</p>
+                <h2 id="cart_two">Item 2</h2>
+                <p id = "cart_two_d">Some text..</p>
+                <p id = "cart_two_q">Some quantity..</p>
             </div>
             <div class="columnCart">
-                <h2>Item 3</h2>
-                <p>Some text..</p>
+                <h2 id ="cart_three">Item 3</h2>
+                <p id="cart_three_d">Some text..</p>
+                <p id = "cart_three_q">Some quantity..</p>
             </div>
             <div class="columnCart">
-                <h2>Item 4</h2>
-                <p>Some text..</p>
+                <h2 id = "cart_four">Item 4</h2>
+                <p id= "cart_four_d">Some text..</p>
+                <p id = "cart_four_q">Some quantity..</p>
             </div>
         </div>
     </div>
 
+    <div id = "payment">
+      <label for="cardNum"><b>Card Number</b></label>
+      <input id ="cardNum" type="text" placeholder="Enter Card Number" name="cardNum" required>
+      <label for="cardMonth"><b>Card Month</b></label>
+      <input id ="cardMonth" type="text" placeholder="Enter Card Month" name="cardMonth" required>
+      <label for="cardYear"><b>Card Year</b></label>
+      <input id ="cardYear" type="text" placeholder="Enter Card Year" name="cardYear" required>
+      <label for="cardType"><b>Card Type</b></label>
+      <input id ="cardType" type="text" placeholder="GC, CC, or DC" name="cardType" required>
+    </div>
+    <div id = "address">
+      <label for="city"><b>City</b></label>
+      <input id ="city" type="text" placeholder="Enter City" name="city" required>
+      <label for="state"><b>State Code</b></label>
+      <input id ="state" type="text" placeholder="Enter State Code" name="state" required>
+      <label for="street_name"><b>Street Name</b></label>
+      <input id ="street_name" type="text" placeholder="Enter Street Name" name="street_name" required>
+      <label for="street_number"><b>Street Number</b></label>
+      <input id ="street_number" type="text" placeholder="Enter Street Number" name="street_number" required>
+      <label for="apt"><b>Apt. Number</b></label>
+      <input id ="apt" type="text" placeholder="Enter Apt. Number (or leave blank)" name="apt" required>
+    </div>
     <div id="total">
-        <p>total price: </p>
-        <button> Buy</button>
+        <p id = "t_price">total price: </p>
+        <button id ="buy"> Buy</button>
     </div>
 
 </body>

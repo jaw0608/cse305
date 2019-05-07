@@ -301,8 +301,8 @@ img {
     }
 }
 
-/*seller*/
-.seller {
+/*filter*/
+.filter {
     padding-top: 1%;
 }
 
@@ -387,41 +387,25 @@ img {
     width: 45%;
     padding: 10px;
     border: 1px solid #09242F;
+    
+    background-repeat: no-repeat;
+/*    background-size: contain;*/
+    margin: auto;
+    background-position: center;
+    opacity: 0.7;
 }
 
 .column h2,
 .column p {
     text-align: center;
     color: white;
-    text-shadow: 0 0 4px #09242F;
+    text-shadow: 0 0 15px #09242F;
 }
-
-/*
-.row {
-    vertical-align: center;
-    margin: auto;
-}
-*/
 
 .row:after {
     content: "";
     display: table;
     clear: both;
-}
-
-#item1 {
-    background: url("images/switch.jpg");
-    background-repeat: no-repeat;
-    background-size: 100%;
-    margin: auto;
-    background-position: center;
-    opacity: 0.5;
-}
-
-#item1 :hover {
-    opacity: 1;
-    transition-delay: .5s;
-    background-size: 120%;
 }
 
 /*about*/

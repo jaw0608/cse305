@@ -1,7 +1,8 @@
 const express = require('express');
 var mysql = require('mysql');
+var path = require('path');
 var pass = "testing123"
-const port =3005;
+const port = 3005;
 
 var con = mysql.createConnection({
   host: "localhost",
@@ -24,6 +25,12 @@ app.use(express.json());       // to support JSON-encoded bodies
 app.use(express.urlencoded({extended: true})); // to support URL-encoded bodies
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))
 //customer. returns new id to client
+
+
+app.use(express.static(path.join(__dirname, '')));
+app.get("/",function(req,res){
+    res.sendFile(__dirname + '/index.html');
+});
 
 app.post("/create_customer",function(req,res){
   var fname = toSQLString(req.body.F_Name);
@@ -147,18 +154,27 @@ app.post("/add_payment_method",function(req,res){
   var email = toSQLString(req.body.Email);
   var type = toSQLString(req.body.Payment_Type);
   var cardNum = req.body.Card_Number;
-  var cardYear = req.body.Card_Year;
-  var cardMonth = req.body.Card_Month;
-  var int_d = new Date(cardYear, cardMonth+1,1);
-  var cardExpiration = new Date(int_d - 1);
+  var year = req.body.Card_Year;
+  var month = req.body.Card_Month;
+  if(month<10) month = `0${month}`
+  // var int_d = new Date(cardYear, cardMonth+1,1);
+  // var cardExpiration = new Date(int_d - 1);
   getCustomerID(email,res).then(function(result){
     var id = result;
-    var qry = `INSERT INTO Payment(Customer_ID,Payment_Type,Card_Number,Card_Expiration)
-    VALUES (${id},${type},${cardNum},${con.escape(cardExpiration)})`;
+    var qry = `Select ID from Payment where Customer_ID=${id} and Payment_Type=${type} and Card_Number=${cardNum}`
     query(qry,res).then(function(result){
-      res.json({"success":1,"id":result.insertId});
-    });
+    if(result[0])
+        res.json({"success":1,"id":result[0].ID});
+    else {
+      qry = `INSERT INTO Payment(Customer_ID,Payment_Type,Card_Number,Card_Expiration)
+      VALUES (${id},${type},${cardNum},'${year}-${month}-01')`;
+      console.log(qry);
+      query(qry,res).then(function(result){
+        res.json({"success":1,"id":result.insertId});
+      });
+    }
   });
+});
 });
 
 app.post("/add_address",function(req,res){
@@ -166,10 +182,11 @@ app.post("/add_address",function(req,res){
   var city = toSQLString(req.body.City);
   var state = toSQLString(req.body.State);
   var street_name = toSQLString(req.body.Street_Name);
-  var street_num = req.body.Street_Number;
+  var street_num = parseInt(req.body.Street_Number,10);
   var apt_number = 0;
-  if(req.body.Apt_Number) apt_number = req.body.Apt_Number;
+  if(req.body.Apt_Number) apt_number = parseInt(req.body.Apt_Number,10);
   getCustomerID(email,res).then(function(result){
+    var id =result;
     var qry = `Select ID from Address where Customer_ID=${result} and City=${city} and State=${state} and
     Street_Name = ${street_name} and Street_Number = ${street_num} and Apt_Number = ${apt_number}`
     query(qry,res).then(function(result){
@@ -177,7 +194,8 @@ app.post("/add_address",function(req,res){
         res.json({"success":1,"id":result[0].ID});
       else {
         qry = `Insert Into Address(Customer_ID,City,State,Street_Name,Street_Number,Apt_Number)
-        VALUES (${result},${city},${state},${street_name},${street_num},${apt_number})`;
+        VALUES (${id},${city},${state},${street_name},${street_num},${apt_number})`;
+        console.log(qry);
         query(qry,res).then(function(result){
           res.json({"success":1,"id":result.insertId});
         });
@@ -213,7 +231,7 @@ app.post("/add_to_cart",function(req,res){
 
 app.post("/get_payment_methods",function(req,res){
   var email = toSQLString(req.body.Email);
-  getCustomerID(email).then(function(result){
+  getCustomerID(email,res).then(function(result){
     var qry = `SELECT * from User_Payment_Methods where Customer_ID = ${result}`;
     query(qry,res).then(function(result){
       res.json(result);
@@ -223,7 +241,7 @@ app.post("/get_payment_methods",function(req,res){
 
 app.post("/get_addresses",function(req,res){
   var email = toSQLString(req.body.Email);
-  getCustomerID(email).then(function(result){
+  getCustomerID(email,res).then(function(result){
     var qry = `SELECT * from User_Address where Customer_ID = ${result}`;
     query(qry,res).then(function(result){
       res.json(result);
@@ -233,7 +251,7 @@ app.post("/get_addresses",function(req,res){
 
 app.post("/get_cart",function(req,res){
   var customer_email = toSQLString(req.body.Email);
-  getCustomerID(customer_email).then(function(c_id){
+  getCustomerID(customer_email,res).then(function(c_id){
     var qry = `Select * from User_Carts where Customer_ID=${c_id}`;
     query(qry,res).then(function(results){
       res.json(results);

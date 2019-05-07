@@ -3,9 +3,42 @@
 
 <head>
     <title>CSE 305</title>
+    <script
+  src="https://code.jquery.com/jquery-3.4.1.js"
+  integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+  crossorigin="anonymous"></script>
+
     <link rel="stylesheet" type="text/css" href="main.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
+
+<script>
+$(function() {
+  $("#loginb").click(function(){
+    var email = $("#uname").val();
+    console.log(email);
+    var pass = $("#password").val();
+    $.ajax({
+
+        'url' : '/login_customer',
+        'type' : 'POST',
+        'data': {
+          "Email": email,
+          "Password": pass
+        },
+        'success' : function(id) {
+          console.log(id);
+          if(id.sucess){
+            sessionStorage.Email = email;
+          }
+
+          document.getElementById('login').style.display='none';
+        }
+    });
+  });
+});
+
+</script>
 
 <body id="body">
     <div class="topnav">
@@ -17,20 +50,20 @@
 
     <div id="login" class="modal">
 
-        <form class="modal-content animate" action="/action_page.php">
+        <form class="modal-content animate">
             <div class="imgcontainer">
                 <span onclick="document.getElementById('login').style.display='none'" class="close" title="Close Modal">&times;</span>
                 <img src="images/icon.png" alt="Avatar" class="avatar">
             </div>
 
             <div class="container">
-                <label for="uname"><b>Username</b></label>
-                <input type="text" placeholder="Enter Username" name="uname" required>
+                <label for="uname"><b>Email</b></label>
+                <input id="uname" type="text" placeholder="Enter Email" name="uname" required>
 
                 <label for="psw"><b>Password</b></label>
-                <input type="password" placeholder="Enter Password" name="psw" required>
+                <input id ="password" type="password" placeholder="Enter Password" name="psw" required>
 
-                <button type="submit">Login</button>
+                <button id = "loginb" type ="button">Login</button>
                 <label>
                     <input type="checkbox" checked="checked" name="remember"> Remember me
                 </label>
@@ -68,13 +101,13 @@
         <span class="dot" onclick="currentSlide(3)"></span>
     </div>
 
-    <div class="sellers">
+    <div class="filter">
         <div id="mySidenav" class="sidenav">
             <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-            <a href="#">Name</a>
-            <a href="#">Price (Asc)</a>
-            <a href="#">Price (Des)</a>
-            <a href="#">Seller</a>
+            <a href="#" id="product">Product</a>
+            <a href="#" id="priceA">Price (Asc)</a>
+            <a href="#" id="priceD">Price (Des)</a>
+            <a href="#" id="seller">Seller</a>
         </div>
 
         <div id="main">
@@ -86,45 +119,137 @@
         <button class="btn" onclick="listView()"><i class="fa fa-bars"></i> List</button>
         <button class="btn" onclick="gridView()"><i class="fa fa-th-large"></i> Grid</button>
 
-        <div class="row">
-            <div id="item1" class="column">
-                <h2>Item 1</h2>
-                <p>Some text..</p>
-            </div>
-            <div class="column">
-                <h2>Item 2</h2>
-                <p>Some text..</p>
-            </div>
-            <div class="column">
-                <h2>Item 3</h2>
-                <p>Some text..</p>
-            </div>
-            <div class="column">
-                <h2>Item 4</h2>
-                <p>Some text..</p>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="column">
-                <h2>Item 5</h2>
-                <p>Some text..</p>
-            </div>
-            <div class="column">
-                <h2>Item 6</h2>
-                <p>Some text..</p>
-            </div>
-            <div class="column">
-                <h2>Item 7</h2>
-                <p>Some text..</p>
-            </div>
-            <div class="column">
-                <h2>Item 8</h2>
-                <p>Some text..</p>
-            </div>
-        </div>
+        <div id="here" class="row"></div>
 
     </div>
+
+    <script src="https://d3js.org/d3.v4.js"></script>
+    <script>
+        var rows = d3.csv("seller.csv", function(error, data, i) {
+
+            data.forEach(function(d) {
+                var div = document.createElement("div");
+                div.setAttribute("class", "column");
+                div.style.background = "url(" + d.Url + ") no-repeat center center";
+
+                var h2 = document.createElement("h2");
+                var t = document.createTextNode(d.Product);
+                h2.appendChild(t);
+
+                div.appendChild(h2);
+
+                document.getElementById("here").appendChild(div);
+            });
+
+            document.getElementById("product").onclick = function() {
+                sortProduct(data)
+                console.log("a");
+                
+                document.getElementById("here").innerHTML = "";
+
+                data.forEach(function(d) {
+                    var div = document.createElement("div");
+                    div.setAttribute("class", "column");
+                    div.style.background = "url(" + d.Url + ") no-repeat center center";
+
+                    var h2 = document.createElement("h2");
+                    var t = document.createTextNode(d.Product);
+                    h2.appendChild(t);
+
+                    div.appendChild(h2);
+
+                    document.getElementById("here").appendChild(div);
+                });
+            };
+            document.getElementById("priceA").onclick = function() {
+                sortPriceAsc(data)
+                console.log("b");
+                
+                document.getElementById("here").innerHTML = "";
+
+                data.forEach(function(d) {
+                    var div = document.createElement("div");
+                    div.setAttribute("class", "column");
+                    div.style.background = "url(" + d.Url + ") no-repeat center center";
+
+                    var h2 = document.createElement("h2");
+                    var t = document.createTextNode(d.Product);
+                    h2.appendChild(t);
+
+                    div.appendChild(h2);
+
+                    document.getElementById("here").appendChild(div);
+                });
+            };
+            document.getElementById("priceD").onclick = function() {
+                sortPriceDes(data)
+                console.log("c");
+                
+                document.getElementById("here").innerHTML = "";
+
+                data.forEach(function(d) {
+                    var div = document.createElement("div");
+                    div.setAttribute("class", "column");
+                    div.style.background = "url(" + d.Url + ") no-repeat center center";
+
+                    var h2 = document.createElement("h2");
+                    var t = document.createTextNode(d.Product);
+                    h2.appendChild(t);
+
+                    div.appendChild(h2);
+
+                    document.getElementById("here").appendChild(div);
+                });
+            };
+            document.getElementById("seller").onclick = function() {
+                sortSeller(data)
+                console.log("d");
+                
+                document.getElementById("here").innerHTML = "";
+
+                data.forEach(function(d) {
+                    var div = document.createElement("div");
+                    div.setAttribute("class", "column");
+                    div.style.background = "url(" + d.Url + ") no-repeat center center";
+
+                    var h2 = document.createElement("h2");
+                    var t = document.createTextNode(d.Product);
+                    h2.appendChild(t);
+
+                    div.appendChild(h2);
+
+                    document.getElementById("here").appendChild(div);
+                });
+            };
+
+            //            console.log(data);
+
+            function sortSeller(data) {
+                data = data.sort(function(a, b) {
+                    return d3.ascending(a.Seller, b.Seller);
+                });
+            }
+
+            function sortPriceAsc(data) {
+                data = data.sort(function(a, b) {
+                    return d3.ascending(a.Price, b.Price);
+                });
+            }
+
+            function sortPriceDes(data) {
+                data = data.sort(function(a, b) {
+                    return d3.descending(a.Price, b.Price);
+                });
+            }
+
+            function sortProduct(data) {
+                data = data.sort(function(a, b) {
+                    return d3.ascending(a.Product, b.Product);
+                });
+            }
+
+        })
+    </script>
 
     <script>
         // Get the modal
@@ -136,7 +261,6 @@
                 modal.style.display = "none";
             }
         }
-
     </script>
 
     <script>
@@ -170,7 +294,6 @@
             slides[slideIndex - 1].style.display = "block";
             dots[slideIndex - 1].className += " active";
         }
-
     </script>
 
     <script>
@@ -193,7 +316,6 @@
                 elements[i].style.width = "45%";
             }
         }
-
     </script>
 
     <script>
@@ -206,7 +328,6 @@
             document.getElementById("mySidenav").style.width = "0";
             document.getElementById("body").style.margin = "auto";
         }
-
     </script>
 </body>
 
