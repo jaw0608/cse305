@@ -1,7 +1,7 @@
 Use data;
 
 CREATE VIEW User_Carts AS
-SELECT Customer_ID,Cart.Seller_ID,Cart.Item_ID,Item_Name,Description,Price,Cart.Quantity
+SELECT Customer_ID,Cart.Seller_ID,Cart.Item_ID,Item_Name,Description,Price,Cart.Quantity,URL
 FROM Cart,Item,Inventory
 WHERE Cart.Item_ID = Item.ID AND Inventory.Item_ID = Item.ID AND Inventory.Seller_ID = Cart.Seller_ID;
 

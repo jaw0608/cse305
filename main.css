@@ -388,7 +388,7 @@ img {
     padding: 10px;
     border: 1px solid #09242F;
     cursor: pointer;
-    
+
     background-repeat: no-repeat;
 /*    background-size: contain;*/
     margin: auto;
@@ -430,6 +430,7 @@ img {
     margin: auto;
     width: 75%;
     border: 1px solid #09242F;
+    background-color: navy;
 }
 
 .columnCart h2,
@@ -449,4 +450,3 @@ img {
     padding: 10px 18px;
     background-color: #0CB093;
 }
-

@@ -31,6 +31,7 @@ CREATE TABLE IF NOT EXISTS Item (
   ID int AUTO_INCREMENT NOT NULL,
   Item_Name varchar(20) NOT NULL,
   Description varchar(500),
+  URL varchar(500),
   PRIMARY KEY (ID),
   Unique(Item_Name, Description)
 );

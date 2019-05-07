@@ -27,29 +27,26 @@ VALUES
   ('Joe', 'Wilson', 'joseph.wilson@stonybrook.edu', 44444444444),
   ('Judy', 'Chen', 'ju-hisu.chen@stonybrook.edu', 5555555555);
 
-INSERT INTO Item(Item_Name, Description)
+INSERT INTO Item(Item_Name, Description,Url)
 VALUES
-  ('Earphones', 'Things that go in your ear for listening to stuff'),
-  ('Pineapple', 'The best thing to put on pizza'),
-  ('Silky Flowers', 'Total real silk flowers'),
-  ('iPhone','Coolest phone eva'),
-  ('fitbit','FLEX ON EM'),
-  ('body spray','axe out those odors'),
-  ('makeup','im not making up descriptions'),
-  ('lotion','lotion make skin smooth'),
-  ('flip flop','gucci flip flops'),
-  ('juice','not to be confused with steriods'),
-  ('aloe vera gel','it helps burns'),
-  ('switch','What your kid actually wanted for xmas'),
-  ('echo','alexa do everything'),
-  ('vitamin water', 'probably good 4 u'),
-  ('wipes','get your own damn kleenex'),
-  ('sneakers','MY ADIDAS'),
-  ('chips','Now 90% air!'),
-  ('sour patch','sour sweet gone'),
-  ('coke','works good on toilets!'),
-  ('cleaner','mr clean spit'),
-  ('detergent','dont eat this kids');
+  ('iPhone','Coolest phone eva','images/iphone.jpg'),
+  ('fitbit','FLEX ON EM','images/fitbit.jpg'),
+  ('body spray','axe out those odors','images/axe.jpg'),
+  ('makeup','im not making up descriptions','images/beauty.jpg'),
+  ('lotion','lotion make skin smooth','images/bliss.jpg'),
+  ('flip flop','gucci flip flops','images/flipflop.jpg'),
+  ('juice','not to be confused with steriods','images/juice.jpg'),
+  ('aloe vera gel','it helps burns','images/skinCare.jpg'),
+  ('switch','What your kid actually wanted for xmas','images/switch.jpg'),
+  ('echo','alexa do everything','images/tech.jpg'),
+  ('vitamin water', 'probably good 4 u','images/vitamin_water.jpg'),
+  ('wipes','get your own damn kleenex','images/wipes.jpg'),
+  ('sneakers','MY ADIDAS','images/shoes.jpg'),
+  ('chips','Now 90% air!','images/chips.jpg'),
+  ('sour patch','sour sweet gone','images/sourPatch.jpg'),
+  ('coke','works good on toilets!','images/coke.jpg'),
+  ('cleaner','mr clean spit','images/cleaner.jpg'),
+  ('detergent','dont eat this kids','images/tide.jpg');
 
 
 INSERT INTO Address(Customer_ID, City, State, Street_Name, Street_Number, Apt_Number)
@@ -70,23 +67,23 @@ VALUES
 
 INSERT INTO Inventory(Item_ID, Seller_ID, Quantity, Price)
 VALUES
-  (4,1,100,999.99),
-  (5,2,100,99.99),
-  (6,3,100,9.99),
-  (7,4,100,12.99),
-  (8,5,100,5.99),
-  (9,6,100,3.99),
-  (10,7,100,2.99),
-  (11,8,100,7.99),
-  (12,9,100,299.99),
-  (13,10,100,199.99),
-  (14,11,100,4.99),
-  (15,12,100,149.99),
-  (16,13,100,2.99),
-  (17,14,100,1.99),
-  (18,15,100,1.99),
-  (19,16,100,14.99),
-  (20,17,100,9.99);
+  (1,1,100,999.99),
+  (2,2,100,99.99),
+  (3,3,100,9.99),
+  (4,4,100,12.99),
+  (5,5,100,5.99),
+  (6,6,100,3.99),
+  (7,7,100,2.99),
+  (8,8,100,7.99),
+  (9,9,100,299.99),
+  (10,10,100,199.99),
+  (11,11,100,4.99),
+  (12,12,100,149.99),
+  (13,13,100,2.99),
+  (14,14,100,1.99),
+  (15,15,100,1.99),
+  (16,16,100,14.99),
+  (17,17,100,9.99);
 
 INSERT INTO Orders(Shipment_ID, Customer_ID, Seller_ID, Item_ID, Payment_ID, Quantity)
 VALUES
@@ -106,3 +103,6 @@ INSERT INTO Employee(Supervisor_ID, F_Name, L_Name, Role, Email)
 VALUES
   (NULL, 'Judy', 'Chen', 'CEO', 'Judy.Chen@site.com'),
   (1,'Joe', 'Wilson', 'Programmer', 'Joe.Wilson@site.com');
+INSERT INTO CLogin(Email,Password)
+VALUES
+	('joseph.wilson@stonybrook.edu','testing123');
