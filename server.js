@@ -1,7 +1,8 @@
 const express = require('express');
 var mysql = require('mysql');
+var path = require('path');
 var pass = "testing123"
-const port =3005;
+const port = 3005;
 
 var con = mysql.createConnection({
   host: "localhost",
@@ -24,6 +25,12 @@ app.use(express.json());       // to support JSON-encoded bodies
 app.use(express.urlencoded({extended: true})); // to support URL-encoded bodies
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))
 //customer. returns new id to client
+
+
+app.use(express.static(path.join(__dirname, '')));
+app.get("/",function(req,res){
+    res.sendFile(__dirname + '/index.html');
+});
 
 app.post("/create_customer",function(req,res){
   var fname = toSQLString(req.body.F_Name);
@@ -213,7 +220,7 @@ app.post("/add_to_cart",function(req,res){
 
 app.post("/get_payment_methods",function(req,res){
   var email = toSQLString(req.body.Email);
-  getCustomerID(email).then(function(result){
+  getCustomerID(email,res).then(function(result){
     var qry = `SELECT * from User_Payment_Methods where Customer_ID = ${result}`;
     query(qry,res).then(function(result){
       res.json(result);
@@ -223,7 +230,7 @@ app.post("/get_payment_methods",function(req,res){
 
 app.post("/get_addresses",function(req,res){
   var email = toSQLString(req.body.Email);
-  getCustomerID(email).then(function(result){
+  getCustomerID(email,res).then(function(result){
     var qry = `SELECT * from User_Address where Customer_ID = ${result}`;
     query(qry,res).then(function(result){
       res.json(result);
@@ -233,7 +240,7 @@ app.post("/get_addresses",function(req,res){
 
 app.post("/get_cart",function(req,res){
   var customer_email = toSQLString(req.body.Email);
-  getCustomerID(customer_email).then(function(c_id){
+  getCustomerID(customer_email,res).then(function(c_id){
     var qry = `Select * from User_Carts where Customer_ID=${c_id}`;
     query(qry,res).then(function(results){
       res.json(results);

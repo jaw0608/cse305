@@ -3,9 +3,42 @@
 
 <head>
     <title>CSE 305</title>
+    <script
+  src="https://code.jquery.com/jquery-3.4.1.js"
+  integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+  crossorigin="anonymous"></script>
+
     <link rel="stylesheet" type="text/css" href="main.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
+
+<script>
+$(function() {
+  $("#loginb").click(function(){
+    var email = $("#uname").val();
+    console.log(email);
+    var pass = $("#password").val();
+    $.ajax({
+
+        'url' : '/login_customer',
+        'type' : 'POST',
+        'data': {
+          "Email": email,
+          "Password": pass
+        },
+        'success' : function(id) {
+          console.log(id);
+          if(id.sucess){
+            sessionStorage.Email = email;
+          }
+
+          document.getElementById('login').style.display='none';
+        }
+    });
+  });
+});
+
+</script>
 
 <body id="body">
     <div class="topnav">
@@ -17,20 +50,20 @@
 
     <div id="login" class="modal">
 
-        <form class="modal-content animate" action="/action_page.php">
+        <form class="modal-content animate">
             <div class="imgcontainer">
                 <span onclick="document.getElementById('login').style.display='none'" class="close" title="Close Modal">&times;</span>
                 <img src="images/icon.png" alt="Avatar" class="avatar">
             </div>
 
             <div class="container">
-                <label for="uname"><b>Username</b></label>
-                <input type="text" placeholder="Enter Username" name="uname" required>
+                <label for="uname"><b>Email</b></label>
+                <input id="uname" type="text" placeholder="Enter Email" name="uname" required>
 
                 <label for="psw"><b>Password</b></label>
-                <input type="password" placeholder="Enter Password" name="psw" required>
+                <input id ="password" type="password" placeholder="Enter Password" name="psw" required>
 
-                <button type="submit">Login</button>
+                <button id = "loginb" type ="button">Login</button>
                 <label>
                     <input type="checkbox" checked="checked" name="remember"> Remember me
                 </label>
