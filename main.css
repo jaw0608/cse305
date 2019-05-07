@@ -387,6 +387,7 @@ img {
     width: 45%;
     padding: 10px;
     border: 1px solid #09242F;
+    cursor: pointer;
     
     background-repeat: no-repeat;
 /*    background-size: contain;*/
