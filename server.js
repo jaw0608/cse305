@@ -161,7 +161,7 @@ app.post("/add_payment_method",function(req,res){
   // var cardExpiration = new Date(int_d - 1);
   getCustomerID(email,res).then(function(result){
     var id = result;
-    var qry = `Select ID from Payment where Customer_ID=${id} and Payment_Type=${type} and Card_Number=${cardNum}`
+    var qry = `Select ID from Payment where Customer_ID=${id} and Card_Number=${cardNum}`
     query(qry,res).then(function(result){
     if(result[0])
         res.json({"success":1,"id":result[0].ID});
@@ -207,26 +207,28 @@ app.post("/add_address",function(req,res){
 app.post("/add_to_cart",function(req,res){
   var seller = toSQLString(req.body.Seller);
   var customer = toSQLString(req.body.Email);
-  var i_id = req.body.Item_ID;
-  var quantity = req.body.Quantity;
-  getSellerID(seller,res).then(function(s_id){
-    getCustomerID(customer,res).then(function(c_id){
-      var qry = `Select * from Cart where Item_ID = ${i_id} and Customer_ID = ${c_id} and Seller_ID = ${s_id}`
-      query(qry,res).then(function(result){
-        if(result[0]){
-          quantity +=result[0].Quantity;
-          qry = `Update Cart Set Quantity = ${quantity} where Item_ID = ${i_id} and Customer_ID = ${c_id} and Seller_ID = ${s_id}`
-        }
-        else {
-          qry = `Insert Into Cart(Customer_ID,Item_ID,Seller_ID,Quantity)
-          VALUES (${c_id},${i_id},${s_id},${quantity})`;
-        }
+  var i_name = toSQLString(req.body.Item_Name);
+  var quantity = parseInt(req.body.Quantity);
+  getItemID(i_name,res).then(function(i_id){
+    getSellerID(seller,res).then(function(s_id){
+      getCustomerID(customer,res).then(function(c_id){
+        var qry = `Select * from Cart where Item_ID = ${i_id} and Customer_ID = ${c_id} and Seller_ID = ${s_id}`
         query(qry,res).then(function(result){
-          res.json({"success":1});
+          if(result[0]){
+            quantity +=result[0].Quantity;
+            qry = `Update Cart Set Quantity = ${quantity} where Item_ID = ${i_id} and Customer_ID = ${c_id} and Seller_ID = ${s_id}`
+          }
+          else {
+            qry = `Insert Into Cart(Customer_ID,Item_ID,Seller_ID,Quantity)
+            VALUES (${c_id},${i_id},${s_id},${quantity})`;
+          }
+          query(qry,res).then(function(result){
+            res.json({"success":1});
+          });
         });
       });
     });
-  })
+  });
 });
 
 app.post("/get_payment_methods",function(req,res){
@@ -397,6 +399,23 @@ function getCustomerID(email,res){
                 resolve(result[0].ID);
               else {
                 res.json({'err':"INVALID_USER"});
+                reject(-1);
+              }
+            });
+        });
+}
+function getItemID(name,res){
+  var qry = `SELECT ID from Item Where Item_Name = ${name}`;
+  return new Promise( ( resolve, reject ) => {
+            con.query(qry,function(err,result){
+              if(err) {
+                res.json({'err':err});
+                reject(err);
+              }
+              if(result[0])
+                resolve(result[0].ID);
+              else {
+                res.json({'err':"INVALID_ITEM"});
                 reject(-1);
               }
             });

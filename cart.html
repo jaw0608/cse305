@@ -15,6 +15,11 @@
     var email = sessionStorage.Email;
     var total=0;
     if(email.length!=0){
+      $("#ltext").html("Log out");
+      $("#ltext").click(function(){
+          sessionStorage.Email = "";
+          document.location.reload(true);
+      });
       $.ajax({
 
           'url' : '/get_cart',
@@ -66,6 +71,11 @@
           'success' : function(id) {
             if(id.sucess){
               sessionStorage.Email = email;
+              $("#ltext").html("Log out");
+              $("#ltext").click(function(){
+                  sessionStorage.Email = "";
+                  document.location.reload(true);
+              });
             }
 
             document.getElementById('login').style.display='none';
@@ -157,7 +167,7 @@
     <div class="topnav">
         <a href="index.html"><span>Home</span></a>
         <a href="about.html"><span>About</span></a>
-        <a class="left" onclick="document.getElementById('login').style.display='block'"><span>Login</span></a>
+        <a class="left" onclick="document.getElementById('login').style.display='block'"><span id="ltext">Login</span></a>
         <a class="left" href="cart.html"><span>Cart</span></a>
     </div>
 
