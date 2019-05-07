@@ -350,7 +350,7 @@ app.post("/get_sellers",function(req,res){
 });
 
 app.post("/get_inventory",function(req,res){
-  query("Select * from Inventory",res).then(function(results){
+  query("Select * from INV",res).then(function(results){
     res.json(results);
   });
 });

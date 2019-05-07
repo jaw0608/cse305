@@ -26,3 +26,8 @@ FROM Item, Orders
 WHERE Item.ID = Item_ID
 GROUP BY Item_ID,Item.Description,Item.ID
 ORDER BY Quantity_Sold;
+
+CREATE VIEW INV AS
+SELECT Item.Item_Name, Item.Description, Seller.Name, Inventory.Price, Inventory.Quantity
+FROM Item,Inventory,Seller
+WHERE Item.ID=Inventory.Item_ID and Seller.ID = Inventory.Seller_ID
