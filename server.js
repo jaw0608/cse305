@@ -2,11 +2,12 @@ const express = require('express');
 var mysql = require('mysql');
 var path = require('path');
 var pass = "testing123"
+var user = "root"
 const port = 3005;
 
 var con = mysql.createConnection({
   host: "localhost",
-  user: "root",
+  user: user,
   password: pass
 });
 
