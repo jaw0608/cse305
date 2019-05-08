@@ -158,7 +158,7 @@
 
                 div.appendChild(h2);
                 div.setAttribute('data-product', d.Product);
-                div.setAttribute('data-Seller', d.Seller);
+                div.setAttribute('data-seller', d.Seller);
 
                 document.getElementById("here").appendChild(div);
                 //                div.onclick = function() {}
@@ -174,10 +174,17 @@
                 // Get the image and insert it inside the modal - use its "alt" text as a caption
                 var modalImg = document.getElementById("img");
                 var captionText = document.getElementById("caption");
-                div.onclick = function() {
+                div.onclick = function(e) {
                     modal.style.display = "block";
                     modalImg.src = d.Url;
                     captionText.innerHTML = d.Product + "</br></br>" + d.Price + "</br></br>" + d.Description;
+                    var product = e.target.dataset.product;
+                    var seller = e.target.dataset.seller;
+                    var add = document.getElementById("add");
+                    add.onclick = function(){};
+                    add.onclick = function(){
+                      addToCart(product,seller);
+                    }
                 }
 
             });
@@ -198,6 +205,8 @@
                     h2.appendChild(t);
 
                     div.appendChild(h2);
+                    div.setAttribute('data-product', d.Product);
+                    div.setAttribute('data-Seller', d.Seller);
 
                     document.getElementById("here").appendChild(div);
                     div.onclick = function() {}
@@ -213,10 +222,17 @@
                     // Get the image and insert it inside the modal - use its "alt" text as a caption
                     var modalImg = document.getElementById("img");
                     var captionText = document.getElementById("caption");
-                    div.onclick = function() {
+                    div.onclick = function(e) {
                         modal.style.display = "block";
                         modalImg.src = d.Url;
                         captionText.innerHTML = d.Product + "</br></br>" + d.Price + "</br></br>" + d.Description;
+                        var product = e.target.dataset.product;
+                        var seller = e.target.dataset.seller;
+                        var add = document.getElementById("add");
+                        add.onclick = function(){};
+                        add.onclick = function(){
+                          addToCart(product,seller);
+                        }
                     }
 
                 });
@@ -237,6 +253,8 @@
                     h2.appendChild(t);
 
                     div.appendChild(h2);
+                    div.setAttribute('data-product', d.Product);
+                    div.setAttribute('data-Seller', d.Seller);
 
                     document.getElementById("here").appendChild(div);
                     div.onclick = function() {}
@@ -252,10 +270,17 @@
                     // Get the image and insert it inside the modal - use its "alt" text as a caption
                     var modalImg = document.getElementById("img");
                     var captionText = document.getElementById("caption");
-                    div.onclick = function() {
+                    div.onclick = function(e) {
                         modal.style.display = "block";
                         modalImg.src = d.Url;
                         captionText.innerHTML = d.Product + "</br></br>" + d.Price + "</br></br>" + d.Description;
+                        var product = e.target.dataset.product;
+                        var seller = e.target.dataset.seller;
+                        var add = document.getElementById("add");
+                        add.onclick = function(){};
+                        add.onclick = function(){
+                          addToCart(product,seller);
+                        }
                     }
                 });
             };
@@ -275,6 +300,8 @@
                     h2.appendChild(t);
 
                     div.appendChild(h2);
+                    div.setAttribute('data-product', d.Product);
+                    div.setAttribute('data-Seller', d.Seller);
 
                     document.getElementById("here").appendChild(div);
                     div.onclick = function() {}
@@ -290,10 +317,17 @@
                     // Get the image and insert it inside the modal - use its "alt" text as a caption
                     var modalImg = document.getElementById("img");
                     var captionText = document.getElementById("caption");
-                    div.onclick = function() {
+                    div.onclick = function(e) {
                         modal.style.display = "block";
                         modalImg.src = d.Url;
                         captionText.innerHTML = d.Product + "</br></br>" + d.Price + "</br></br>" + d.Description;
+                        var product = e.target.dataset.product;
+                        var seller = e.target.dataset.seller;
+                        var add = document.getElementById("add");
+                        add.onclick = function(){};
+                        add.onclick = function(){
+                          addToCart(product,seller);
+                        }
                     }
                 });
             };
@@ -313,6 +347,8 @@
                     h2.appendChild(t);
 
                     div.appendChild(h2);
+                    div.setAttribute('data-product', d.Product);
+                    div.setAttribute('data-Seller', d.Seller);
 
                     document.getElementById("here").appendChild(div);
                     div.onclick = function() {}
@@ -328,10 +364,17 @@
                     // Get the image and insert it inside the modal - use its "alt" text as a caption
                     var modalImg = document.getElementById("img");
                     var captionText = document.getElementById("caption");
-                    div.onclick = function() {
+                    div.onclick = function(e) {
                         modal.style.display = "block";
                         modalImg.src = d.Url;
                         captionText.innerHTML = d.Product + "</br></br>" + d.Price + "</br></br>" + d.Description;
+                        var product = e.target.dataset.product;
+                        var seller = e.target.dataset.seller;
+                        var add = document.getElementById("add");
+                        add.onclick = function(){};
+                        add.onclick = function(){
+                          addToCart(product,seller);
+                        }
                     }
                 });
             };
@@ -411,14 +454,12 @@
             dots[slideIndex - 1].className += " active";
         }
 
-        function addToCart(name, seller, ele) {
+        function addToCart(name, seller) {
             if (sessionStorage.Email == 0) {
-                ele.style.color = "red";
-                if (ele.childNodes.length > 0 && ele.childNodes[0].style) ele.childNodes[0].style.color = "red";
-                setTimeout(function() {
-                    ele.style.color = "white";
-                    if (ele.childNodes.length > 0 && ele.childNodes[0].style) ele.childNodes[0].style.color = "white";
-                }, 3000);
+              $("#add").html("Add failed: must login");
+              setTimeout(function() {
+                $("#add").html("Add to Cart");
+              }, 3000);
             }
             var email = sessionStorage.Email;
             $.ajax({
@@ -433,19 +474,15 @@
                 },
                 'success': function(id) {
                     if (id.success) {
-                        ele.style.color = "green";
-                        if (ele.childNodes.length > 0 && ele.childNodes[0].style) ele.childNodes[0].style.color = "green";
-                        setTimeout(function() {
-                            ele.style.color = "white";
-                            if (ele.childNodes.length > 0 && ele.childNodes[0].style) ele.childNodes[0].style.color = "white";
-                        }, 3000);
+                      $("#add").html("Added!");
+                      setTimeout(function() {
+                        $("#add").html("Add to Cart");
+                      }, 3000);
                     } else {
-                        ele.style.color = "red";
-                        if (ele.childNodes.length > 0 && ele.childNodes[0].style) ele.childNodes[0].style.color = "red";
-                        setTimeout(function() {
-                            ele.style.color = "white";
-                            if (ele.childNodes.length > 0 && ele.childNodes[0].style) ele.childNodes[0].style.color = "white";
-                        }, 3000);
+                      $("#add").html("Add failed: server error");
+                      setTimeout(function() {
+                        $("#add").html("Add to Cart");
+                      }, 3000);
                     }
                 }
             });
