@@ -3,17 +3,14 @@
 
 <head>
     <title>CSE 305</title>
-    <script
-  src="https://code.jquery.com/jquery-3.4.1.js"
-  integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
-  crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
 
     <link rel="stylesheet" type="text/css" href="main.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 
 <script>
-$(function() {
+    $(function() {
   if(sessionStorage.Email){
     $("#ltext").html("Log out");
     $("#ltext").click(function(){
@@ -57,7 +54,7 @@ $(function() {
     <div class="topnav">
         <a href="index.html"><span>Home</span></a>
         <a href="about.html"><span>About</span></a>
-        <a class="left" onclick="document.getElementById('login').style.display='block'"><span id ="ltext">Login</span></a>
+        <a class="left" onclick="document.getElementById('login').style.display='block'"><span id="ltext">Login</span></a>
         <a class="left" href="cart.html"><span id="cartText">Cart</span></a>
     </div>
 
@@ -74,9 +71,9 @@ $(function() {
                 <input id="uname" type="text" placeholder="Enter Email" name="uname" required>
 
                 <label for="psw"><b>Password</b></label>
-                <input id ="password" type="password" placeholder="Enter Password" name="psw" required>
+                <input id="password" type="password" placeholder="Enter Password" name="psw" required>
 
-                <button id = "loginb" type ="button">Login</button>
+                <button id="loginb" type="button">Login</button>
                 <label>
                     <input type="checkbox" checked="checked" name="remember"> Remember me
                 </label>
@@ -123,6 +120,13 @@ $(function() {
             <a href="#" id="seller">Seller</a>
         </div>
 
+        <div id="myModal" class="product">
+            <span onclick ="document.getElementById('myModal').style.display='none'" class="close">&times;</span>
+            <img class="product-img" id="img">
+            <div id="caption"></div>
+            <button id ="add"> Add to Cart </button>
+        </div>
+
         <div id="main">
             <span style="font-size:30px;cursor:pointer" onclick="openNav()">&#10087; Filter</span>
         </div>
@@ -148,21 +152,34 @@ $(function() {
                 var t = document.createTextNode(d.Product);
                 h2.appendChild(t);
 
-                h2.setAttribute('data-product',d.Product);
-                h2.setAttribute('data-Seller',d.Seller);
+                h2.setAttribute('data-product', d.Product);
+                h2.setAttribute('data-Seller', d.Seller);
 
 
                 div.appendChild(h2);
-                div.setAttribute('data-product',d.Product);
-                div.setAttribute('data-Seller',d.Seller);
+                div.setAttribute('data-product', d.Product);
+                div.setAttribute('data-Seller', d.Seller);
 
                 document.getElementById("here").appendChild(div);
-                div.onclick = function(){}
-                div.onclick = function(e){
-                  var seller = e.target.dataset.seller;
-                  var product = e.target.dataset.product;
-                  addToCart(product,seller,e.target);
+//                div.onclick = function() {}
+//                div.onclick = function(e) {
+//                    var seller = e.target.dataset.seller;
+//                    var product = e.target.dataset.product;
+//                    addToCart(product, seller, e.target);
+//                }
+
+                // Get the modal
+                var modal = document.getElementById('myModal');
+
+                // Get the image and insert it inside the modal - use its "alt" text as a caption
+                var modalImg = document.getElementById("img");
+                var captionText = document.getElementById("caption");
+                div.onclick = function() {
+                    modal.style.display = "block";
+                    modalImg.src = d.Url;
+                    captionText.innerHTML = d.Product + "</br></br>" + d.Price + "</br></br>" + d.Description;
                 }
+
             });
 
             document.getElementById("product").onclick = function() {
@@ -183,11 +200,11 @@ $(function() {
                     div.appendChild(h2);
 
                     document.getElementById("here").appendChild(div);
-                    div.onclick = function(){}
-                    div.onclick = function(e){
-                      var seller = e.target.dataset.seller;
-                      var product = e.target.dataset.product;
-                      addToCart(product,seller,e.target);
+                    div.onclick = function() {}
+                    div.onclick = function(e) {
+                        var seller = e.target.dataset.seller;
+                        var product = e.target.dataset.product;
+                        addToCart(product, seller, e.target);
                     }
                 });
             };
@@ -209,11 +226,11 @@ $(function() {
                     div.appendChild(h2);
 
                     document.getElementById("here").appendChild(div);
-                    div.onclick = function(){}
-                    div.onclick = function(e){
-                      var seller = e.target.dataset.seller;
-                      var product = e.target.dataset.product;
-                      addToCart(product,seller,e.target);
+                    div.onclick = function() {}
+                    div.onclick = function(e) {
+                        var seller = e.target.dataset.seller;
+                        var product = e.target.dataset.product;
+                        addToCart(product, seller, e.target);
                     }
                 });
             };
@@ -235,11 +252,11 @@ $(function() {
                     div.appendChild(h2);
 
                     document.getElementById("here").appendChild(div);
-                    div.onclick = function(){}
-                    div.onclick = function(e){
-                      var seller = e.target.dataset.seller;
-                      var product = e.target.dataset.product;
-                      addToCart(product,seller,e.target);
+                    div.onclick = function() {}
+                    div.onclick = function(e) {
+                        var seller = e.target.dataset.seller;
+                        var product = e.target.dataset.product;
+                        addToCart(product, seller, e.target);
                     }
                 });
             };
@@ -261,11 +278,11 @@ $(function() {
                     div.appendChild(h2);
 
                     document.getElementById("here").appendChild(div);
-                    div.onclick = function(){}
-                    div.onclick = function(e){
-                      var seller = e.target.dataset.seller;
-                      var product = e.target.dataset.product;
-                      addToCart(product,seller,e.target);
+                    div.onclick = function() {}
+                    div.onclick = function(e) {
+                        var seller = e.target.dataset.seller;
+                        var product = e.target.dataset.product;
+                        addToCart(product, seller, e.target);
                     }
                 });
             };
@@ -297,6 +314,7 @@ $(function() {
             }
 
         })
+
     </script>
 
     <script>
@@ -309,6 +327,7 @@ $(function() {
                 modal.style.display = "none";
             }
         }
+
     </script>
 
     <script>
@@ -343,46 +362,46 @@ $(function() {
             dots[slideIndex - 1].className += " active";
         }
 
-        function addToCart(name,seller,ele){
-          if(sessionStorage.Email==0){
-            ele.style.color = "red";
-            if(ele.childNodes.length>0 && ele.childNodes[0].style) ele.childNodes[0].style.color = "red";
-            setTimeout(function() {
-              ele.style.color = "white";
-              if(ele.childNodes.length>0 && ele.childNodes[0].style) ele.childNodes[0].style.color = "white";
-            }, 3000);
-          }
-          var email = sessionStorage.Email;
-          $.ajax({
+        function addToCart(name, seller, ele) {
+            if (sessionStorage.Email == 0) {
+                ele.style.color = "red";
+                if (ele.childNodes.length > 0 && ele.childNodes[0].style) ele.childNodes[0].style.color = "red";
+                setTimeout(function() {
+                    ele.style.color = "white";
+                    if (ele.childNodes.length > 0 && ele.childNodes[0].style) ele.childNodes[0].style.color = "white";
+                }, 3000);
+            }
+            var email = sessionStorage.Email;
+            $.ajax({
 
-              'url' : '/add_to_cart',
-              'type' : 'POST',
-              'data': {
-                "Email": email,
-                "Item_Name": name,
-                "Seller":seller,
-                "Quantity":1
-              },
-              'success' : function(id) {
-                if(id.success){
-                  ele.style.color = "green";
-                  if(ele.childNodes.length>0 && ele.childNodes[0].style) ele.childNodes[0].style.color = "green";
-                  setTimeout(function() {
-                    ele.style.color = "white";
-                    if(ele.childNodes.length>0 && ele.childNodes[0].style) ele.childNodes[0].style.color = "white";
-                  }, 3000);
+                'url': '/add_to_cart',
+                'type': 'POST',
+                'data': {
+                    "Email": email,
+                    "Item_Name": name,
+                    "Seller": seller,
+                    "Quantity": 1
+                },
+                'success': function(id) {
+                    if (id.success) {
+                        ele.style.color = "green";
+                        if (ele.childNodes.length > 0 && ele.childNodes[0].style) ele.childNodes[0].style.color = "green";
+                        setTimeout(function() {
+                            ele.style.color = "white";
+                            if (ele.childNodes.length > 0 && ele.childNodes[0].style) ele.childNodes[0].style.color = "white";
+                        }, 3000);
+                    } else {
+                        ele.style.color = "red";
+                        if (ele.childNodes.length > 0 && ele.childNodes[0].style) ele.childNodes[0].style.color = "red";
+                        setTimeout(function() {
+                            ele.style.color = "white";
+                            if (ele.childNodes.length > 0 && ele.childNodes[0].style) ele.childNodes[0].style.color = "white";
+                        }, 3000);
+                    }
                 }
-                else {
-                  ele.style.color = "red";
-                  if(ele.childNodes.length>0 && ele.childNodes[0].style) ele.childNodes[0].style.color = "red";
-                  setTimeout(function() {
-                    ele.style.color = "white";
-                    if(ele.childNodes.length>0 && ele.childNodes[0].style) ele.childNodes[0].style.color = "white";
-                  }, 3000);
-                }
-              }
-          });
+            });
         }
+
     </script>
 
     <script>
@@ -405,6 +424,7 @@ $(function() {
                 elements[i].style.width = "45%";
             }
         }
+
     </script>
 
     <script>
@@ -417,6 +437,7 @@ $(function() {
             document.getElementById("mySidenav").style.width = "0";
             document.getElementById("body").style.margin = "auto";
         }
+
     </script>
 </body>
 

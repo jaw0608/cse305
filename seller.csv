@@ -1,19 +1,19 @@
-Seller,Product,Price,Url
-Apple,iPhone,999.99,images/iphone.jpg
-Fitbit,fitbit,99.99,images/fitbit.jpg
-Axe,body spray,9.99,images/axe.jpg
-Dior,makeup,12.99,images/beauty.jpg
-Aveeno,lotion,5.99,images/bliss.jpg
-nike,flip flop,3.99,images/flipflop.jpg
-ocean spray,juice,2.99,images/juice.jpg
-Walgreens,aloe vera gel,7.99,images/skinCare.jpg
-nintendo,switch,299.99,images/switch.jpg
-Amazon,echo,199.99,images/tech.jpg
-Smart water,vitamin water,1.99,images/vitamin_water.jpg
-Kleenex,wipes,4.99,images/wipes.jpg
-Adidas,sneakers,149.99,images/shoes.jpg
-Lays,chips,2.99,images/chips.jpg
-Sour Patch Kids,sour patch,1.99,images/sourPatch.jpg
-Coca Cola,coke,1.99,images/coke.jpg
-Better Life,cleaner,14.99,images/cleaner.jpg
-Tide,detergent,9.99,images/tide.jpg
+Seller,Product,Price,Url,Description
+Apple,iPhone,999.99,images/iphone.jpg,"Super Retina in two sizes, even faster Face ID. The smartest, most powerful chip in a smartphone, and a breakthrough dual-camera system with Depth Control."
+Fitbit,fitbit,99.99,images/fitbit.jpg,"Fitbit Charge reveals insights about your body, your fitness and everything in between¡Vbecause the better you know yourself, the better you can be."
+Axe,body spray,9.99,images/axe.jpg,"A fresh blend of bright florals & a hint of sweet citrus. Notes of blue freesia, sweet clementine & soft violet petals."
+Dior,makeup,12.99,images/beauty.jpg,An all-over face and body highlighter designed to give you radiant-looking skin that glows.
+Aveeno,lotion,5.99,images/bliss.jpg,"Used daily, it targets age-giveaway zones like arms, knees, legs and chest, restoring a smoother, more balanced texture as well as firmer, healthier-looking skin"
+nike,flip flop,3.99,images/flipflop.jpg,"Flip Flop Sandals - Great for the beach, pool, or vacation?"
+ocean spray,juice,2.99,images/juice.jpg,"This variety pack includes three 100% juice flavors (8 bottles each) - Fruit Medley, Pineapple Peach Mango and Strawberry Orange"
+Walgreens,aloe vera gel,7.99,images/skinCare.jpg,"#1 HIGHEST QUALITY - to ensure freshness, our Aloe is proudly grown here in Southern Texas, in USDA (OTCO) certified fields."
+nintendo,switch,299.99,images/switch.jpg,"Play your way with the Nintendo Switch gaming system. Whether you're at home or on-the-go, solo or with friends, the Nintendo Switch system is designed to fit your life."
+Amazon,echo,199.99,images/tech.jpg,"Echo connects to Alexa to play music, read the news, set alarms and timers, answer questions, control compatible smart home devices, and more."
+Smart water,vitamin water,1.99,images/vitamin_water.jpg,"vitaminwater is a great-tasting, nutrient enhanced water beverage. Excellent source of C + B vitamins."
+Kleenex,wipes,4.99,images/wipes.jpg,Superior Clean - Wavy CleanRipple texture provides softness while removing more - cleans better versus using dry bath tissue alone
+Adidas,sneakers,149.99,images/shoes.jpg,"STYLE AND DESIGN: Sporty yet minimal, the Ivy is the perfect fashion sneaker. Crafted with the softest leathers in a variety of colors, leather lining with a thick rubber sole. It's the epitome of athleisure that can be worn with any outfit."
+Lays,chips,2.99,images/chips.jpg,"These much loved treats are fun to enjoy at lunch, as an after-school snack, or party refreshment"
+Sour Patch Kids,sour patch,1.99,images/sourPatch.jpg,Sour Patch Kids - First they're sour. Then they're sweet.
+Coca Cola,coke,1.99,images/coke.jpg,Most popular and biggest-selling soft drink in history
+Better Life,cleaner,14.99,images/cleaner.jpg,"Kills Rotavirus Wa And Respiratory Syncytial Virus On Hard, Non-Porous Surfaces In 10 Minutes"
+Tide,detergent,9.99,images/tide.jpg,"This liquid laundry detergent is the Tide you love, now with 10x the cleaning power"
