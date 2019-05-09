@@ -425,7 +425,7 @@
         }
 
         function addToCart(name, seller) {
-            if (sessionStorage.Email.length == 0) {
+            if (!sessionStorage.Email || sessionStorage.Email.length==0) {
               $("#add").html("Add failed: must login");
               setTimeout(function() {
                 $("#add").html("Add to Cart");
