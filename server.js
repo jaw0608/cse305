@@ -293,6 +293,7 @@ app.post("/place_order",function(req,res){
   var email = toSQLString(req.body.Email);
   var carrier = toSQLString(req.body.Carrier);
   var date = new Date();
+  var fail=0;
   var speed = toSQLString(req.body.Speed);
   getCustomerID(email).then(function(c_id){
     var qry = `Insert Into Shipment(Address_ID,Carrier,Ship_Date,Speed)
@@ -301,18 +302,26 @@ app.post("/place_order",function(req,res){
       var ship_id = result.insertId;
       qry = `Select * from User_Carts where Customer_ID=${c_id}`;
       query(qry,res).then(function(results){
+        console.log(results.length);
+        var i;
         for(i=0; i<results.length; i++){
+          console.log(results[i].Item_ID);
+          if(fail) break;
           var s_id = results[i].Seller_ID;
           var i_id = results[i].Item_ID;
           var price = results[i].Price;
           var quantity = results[i].Quantity;
           order_item(res,c_id,s_id,i_id,quantity).then(function(result){
             qry = `INSERT INTO Orders(Shipment_ID,Customer_ID,Seller_ID,Item_ID,Quantity,Item_Price,Payment_ID)
-            VALUES(${ship_id},${c_id},${s_id},${i_id},${quantity},${price},${p_id})`;
+            VALUES(${ship_id},${result[0]},${result[1]},${result[2]},${result[3]},${result[4]},${p_id})`;
+            console.log("PLACING ORDER: ", qry);
             query(qry,res);
-          });
+          },function(){fail=1});
         }
-        res.json({"success":1});
+        if(fail==0){
+          console.log("returning success from end");
+          res.json({"success":1});
+        }
       });
     });
   });
@@ -393,12 +402,14 @@ function getCustomerID(email,res){
   return new Promise( ( resolve, reject ) => {
             con.query(qry,function(err,result){
               if(err) {
+                console.log(err);
                 res.json({'err':err});
                 reject(err);
               }
               if(result[0])
                 resolve(result[0].ID);
               else {
+                console.log("invalid usern\n");
                 res.json({'err':"INVALID_USER"});
                 reject(-1);
               }
@@ -409,6 +420,7 @@ function getItemID(name,res){
   var qry = `SELECT ID from Item Where Item_Name = ${name}`;
   return new Promise( ( resolve, reject ) => {
             con.query(qry,function(err,result){
+              console.log(result);
               if(err) {
                 res.json({'err':err});
                 reject(err);
@@ -427,7 +439,7 @@ function query(qry,res){
   return new Promise( ( resolve, reject ) => {
             con.query(qry,function(err,result){
               if(err) {
-                console.log(res);
+                console.log(err);
                 res.json({'err':err});
                 reject(err);
               }
@@ -456,13 +468,14 @@ function remove_from_cart(res,c_id,s_id,i_id,quantity){
 }
 function order_item(res,c_id,s_id,i_id,quantity){
   return new Promise((resolve,reject)=>{
-    var qry = `Select Quantity from Inventory where Item_ID = ${i_id} and Seller_ID=${s_id}`;
+    var qry = `Select Quantity,Price from Inventory where Item_ID = ${i_id} and Seller_ID=${s_id}`;
     query(qry,res).then(function(result){
+      var price = result[0].Price;
       if(result[0] && result[0].Quantity>=quantity){
         qry = `Update Inventory Set Quantity = ${result[0].Quantity-quantity} Where Item_ID = ${i_id} and Seller_ID=${s_id}`;
         query(qry,res).then(function(result){
           remove_from_cart(res,c_id,s_id,i_id,quantity).then(function(result){
-            resolve(1);
+            resolve([c_id,s_id,i_id,quantity,price]);
           },function(err){reject(err);});
         },function(err){reject(err);});
       }
