@@ -27,7 +27,8 @@
           'success' : function(items) {
             console.log(items);
               if(items.length > 0) {
-                  for(int i = 0; i < items.length; i++){
+                var i;
+                  for(i = 0; i < items.length; i++){
                       var div = document.createElement("div");
                       div.setAttribute("class", "columnCart");
                       div.style.background = "url(" + items[i].URL + ") no-repeat center center";
@@ -35,10 +36,19 @@
                       var t = document.createTextNode(items[i].Item_Name);
                       h2.appendChild(t);
                       var p = document.createElement("p");
-                      vap = document.createTextNode(items[i].Price + "</br>" + items[i].Quantity);
-                      total += item[i].Price * items[i].Quantity;
+                      var ptext = document.createTextNode(items[i].Price);
+                      p.appendChild(ptext);
+                      div.appendChild(p);
+                      p = document.createElement("p");
+                      ptext = document.createTextNode("Quantity: "+items[i].Quantity);
+                      p.appendChild(ptext);
+                      div.appendChild(p);
+
+                      total += items[i].Price * items[i].Quantity;
+                      div.appendChild(h2);
+                      document.getElementById("cart").append(div);
                   }
-                  
+
               }
 //            if(items.length>0){
 //              $("#cart_one").html(items[0].Item_Name);
