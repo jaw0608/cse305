@@ -425,37 +425,39 @@
         }
 
         function addToCart(name, seller) {
-            if (sessionStorage.Email == 0) {
+            if (sessionStorage.Email.length == 0) {
               $("#add").html("Add failed: must login");
               setTimeout(function() {
                 $("#add").html("Add to Cart");
               }, 3000);
             }
-            var email = sessionStorage.Email;
-            $.ajax({
+            else {
+              var email = sessionStorage.Email;
+              $.ajax({
 
-                'url': '/add_to_cart',
-                'type': 'POST',
-                'data': {
-                    "Email": email,
-                    "Item_Name": name,
-                    "Seller": seller,
-                    "Quantity": 1
-                },
-                'success': function(id) {
-                    if (id.success) {
-                      $("#add").html("Added!");
-                      setTimeout(function() {
-                        $("#add").html("Add to Cart");
-                      }, 3000);
-                    } else {
-                      $("#add").html("Add failed: server error");
-                      setTimeout(function() {
-                        $("#add").html("Add to Cart");
-                      }, 3000);
-                    }
-                }
-            });
+                  'url': '/add_to_cart',
+                  'type': 'POST',
+                  'data': {
+                      "Email": email,
+                      "Item_Name": name,
+                      "Seller": seller,
+                      "Quantity": 1
+                  },
+                  'success': function(id) {
+                      if (id.success) {
+                        $("#add").html("Added!");
+                        setTimeout(function() {
+                          $("#add").html("Add to Cart");
+                        }, 3000);
+                      } else {
+                        $("#add").html("Add failed: server error");
+                        setTimeout(function() {
+                          $("#add").html("Add to Cart");
+                        }, 3000);
+                      }
+                  }
+              });
+          }
         }
 
     </script>
